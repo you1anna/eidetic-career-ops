@@ -3,7 +3,7 @@
 [Documentation index](../docs/README.md)
 
 Since 27 September the workspace is hosted (`https://work.example.com`; see
-[OPERATIONS.md](OPERATIONS.md) and [HANDOVER.md](HANDOVER.md)). The Mac serves nothing and schedules
+[OPERATIONS.md](OPERATIONS.md) and HANDOVER.md). The Mac serves nothing and schedules
 one LaunchAgent job, the daily off-host site-database backup. The former Codex desktop research
 schedule is paused; [VPS research](../docs/vps-research.md) uses the server's existing Codex ChatGPT
 login at 09:00/19:00 Europe/London. See the
@@ -306,7 +306,7 @@ retained copy without the VPS, on a scratch copy only. Preserve the encrypted or
 private path with `age --decrypt -i ~/.config/work-ops/backup.agekey -o <new-file.db> <archive.db.age>`.
 Validate SQLite integrity, schema versions and nonempty records before migration; rehearse any
 required migrations on that restored copy and run `wo --db <new-file.db> quality --strict`.
-Then follow the approved [rebuild procedure](HANDOVER.md), including its access and backup checks.
+Then follow the approved rebuild procedure, including its access and backup checks.
 Starting a replacement writer is a recovery decision, not an automatic effect of restoring a copy.
 
 ## Private career reference files

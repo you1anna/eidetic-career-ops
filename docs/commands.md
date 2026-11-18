@@ -356,12 +356,12 @@ and retained database history still grow; see [capacity and recovery](architectu
 
 ## Replacing or restoring the database
 
-For spreadsheet fields and export limits, see the [CSV dictionary](../career-directory.md).
+For spreadsheet fields and export limits, see the CSV dictionary.
 
 `export-json` without `--full` writes a limited table subset and omits unaccepted LinkedIn
 candidates, observations, state-event history and run receipts. Its legacy `scope: committed` label
 does not authorise committing private exports: neither form belongs in Git (decision #28). Use
-`--full` for a complete JSON export, or the encrypted [backup and recovery workflow](../ops/HANDOVER.md). `import-json` refuses to
+`--full` for a complete JSON export, or the encrypted backup and recovery workflow. `import-json` refuses to
 replace a non-empty database unless `--replace` is supplied, and that mode creates a consistent
 pre-import backup automatically. A replacement with fewer records additionally requires
 `--allow-count-reduction`. Database restore writes only to a new path: stop the service, validate the

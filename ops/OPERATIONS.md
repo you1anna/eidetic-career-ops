@@ -3,7 +3,7 @@
 [Documentation index](../docs/README.md)
 
 Status: **hosted since 27 September 2026** at `https://work.example.com` (UpCloud VPS, Cloudflare
-Tunnel and Access). The runbook and record are in [HANDOVER.md](HANDOVER.md); local development is in
+Tunnel and Access). The runbook and record are in HANDOVER.md; local development is in
 [LOCAL.md](LOCAL.md).
 
 [The system map](../docs/system-map.md) shows the live data flow, local/remote responsibilities,
@@ -51,7 +51,7 @@ security boundaries as checked on 9 October. Current release checks are describe
 | Node + Playwright | UI smoke tests, and `wo fetch`'s browser step | not installed: `wo fetch` there reads directly only |
 
 `.python-version` pins 3.12. Rebuild a venv with `python3.12 -m venv .venv` (Mac) or as in
-[HANDOVER.md](HANDOVER.md) (VPS), then install `requirements.txt`.
+HANDOVER.md (VPS), then install `requirements.txt`.
 The decision/outreach engine adds no Python dependency: its YAML configuration uses the existing
 PyYAML pin, while SQLite, HTTP serving and gzip compression use the standard library. Node and
 Playwright remain local verification tools.
@@ -627,7 +627,7 @@ the Mac mini without an API token, and granting one is the owner's decision. Aft
 | Login loop or "access denied" | Access sign-in log: Cloudflare dashboard → Zero Trust → Logs → Access, or the API `accounts/{id}/access/logs/access_requests`. The app is "work"; one Allow policy, one-time PIN, 1-week application and policy sessions (saved and checked 16 October). The login-page name is "Work Ops". |
 | Saves fail at once with **Failed to fetch** / **Load failed**, and DevTools shows `(blocked:csp)` on `/api/...` | The one-week Access sign-in ended while the tab was open. Sessions do not extend with use: the 16 October session ended at 08:52 on 23 October, mid-task. Access redirects every API call to the login page, and the page's `connect-src 'self'` blocks that redirect before it leaves the browser, so nothing reaches the origin or its log. Since `api()` started using `redirect: 'manual'`, the page reports **Your sign-in has ended** and offers sign-in in a new tab, which keeps typed text. Anonymous check: `curl -s -o /dev/null -w '%{http_code} %{redirect_url}' -X POST https://work.example.com/api/state` returns 302 to the login page. |
 | 502 after an Access team-domain change | Check `journalctl -u cloudflared` for `AccessJWTValidator` issuer mismatch. On 16 October existing tokens retained the old issuer after a rename; restoring the Cloudflare team domain and matching VPS `teamName` recovered connected Chrome access. Current team domain: `example.cloudflareaccess.com`. Before any future rename, revoke existing user sessions while the current domain still works and verify the old browser session returns to login. Stage and validate the matching server configuration before cutover. Keep JWT validation enabled. Anonymous redirects and service health do not prove authenticated access; verify the workspace in both an existing session and a fresh code login. |
-| Login code late or missing | Request one code only: a new request cancels the last one, and Gmail files every code in one conversation (newest last). Search Gmail `in:anywhere from:noreply@notify.cloudflare.com`; the Access log records only completed logins, not code requests. Check the app's Allow policy and the One-time PIN identity provider exist, then [cloudflarestatus.com](https://www.cloudflarestatus.com). Incident of 30 Sep 2026 (codes delivered late, no fault found): [2026-09-30-access-otp-incident.md](2026-09-30-access-otp-incident.md). |
+| Login code late or missing | Request one code only: a new request cancels the last one, and Gmail files every code in one conversation (newest last). Search Gmail `in:anywhere from:noreply@notify.cloudflare.com`; the Access log records only completed logins, not code requests. Check the app's Allow policy and the One-time PIN identity provider exist, then [cloudflarestatus.com](https://www.cloudflarestatus.com). Incident of 30 Sep 2026 (codes delivered late, no fault found): 2026-09-30-access-otp-incident.md. |
 | The site briefly fails, or `ops/vps/check.sh` reports "workspace killed for memory" | `SSH sudo journalctl -u work-ops-workspace | grep oom-kill`. systemd restarts the server within 5 seconds. The service is capped at 512 MB (`MemoryMax` in `ops/vps/work-ops-workspace.service`); one cached full state was about 80 MB of live objects on 21 October and grows with the data. Measure with a fresh copy before raising the cap: `ops/pull-backup.sh`, then load a scratch server on port 8791. |
 | A save fails or is refused | `SSH sudo journalctl -u work-ops-workspace -n 100`: one line per save or refusal (`PATCH /api/records/X 409 12ms`), never its content; a 500 adds a traceback. Each page load (`GET / 200 3ms iphone`) and section view (`POST /api/seen/week 200`) is counted too, never which record; other successful reads are not logged. |
 | The dashboard says "Daily run overdue" or "Nightly backup overdue" (over 30 hours) | `SSH systemctl list-timers wo-scan.timer`; `SSH sudo journalctl -u wo-scan -n 40` (one line per source, then the import and quality counts). |

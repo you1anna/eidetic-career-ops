@@ -88,6 +88,6 @@ from a previous passing run. A release does not deploy the separate email Worker
 
 `/deploy` takes no arguments. Required migrations, a specific revision and timer changes use the
 explicit `ops/vps/deploy.sh --local-approved <options>` route under the authority rules in
-[CLAUDE.md](../CLAUDE.md#showing-owner-each-change). A release instruction includes necessary schema
+[CLAUDE.md](../CLAUDE.md#releases-private-deployment). A release instruction includes necessary schema
 migrations; it does not authorize schedule or infrastructure changes. Never silently add options
 to the routine runner.

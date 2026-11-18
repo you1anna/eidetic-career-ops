@@ -7,17 +7,15 @@ A separate focused research pass checks public evidence and may add supported co
 checks or decisive unknowns. It can also finish with unresolved gaps and no new facts.
 You compose and send in Gmail or the application site; factual tracking on the site is optional.
 
-**Open [How it works on the private site](https://work.example.com/system-map)**, also linked
-from the workspace navigation. It provides responsive process cards, expandable explanations,
-full-size SVGs and PNG downloads. Sign in through the same Access boundary as the workspace.
+**Open How it works in the running workspace** (`/system-map`, for example
+<http://127.0.0.1:8791/system-map> after the README's local steps), also linked from the workspace
+navigation. It provides responsive process cards, expandable explanations, full-size SVGs and PNG
+downloads.
 
-The overview, email and research diagrams describe the **26 October opportunity-led implementation**: ranked work,
-evidence assessments, incoming hiring processes, optional relationship tracking, monitoring,
-recovery and attended releases. This local revision is not deployment evidence.
-They are explanatory documentation, not live telemetry. The
-activation ledger owns release status and verification.
-A completed run may add no useful facts. Automatic data refresh is implemented; autonomous
-software diagnosis, improvement and deployment are not.
+The diagrams show the system as built on 26 October: ranked work, evidence assessments, incoming
+hiring processes, optional relationship tracking, monitoring, recovery and attended releases. They
+explain the design; they are not live telemetry. Data refresh is automatic. Software diagnosis,
+improvement and deployment are not.
 
 ## From source to site
 
@@ -25,16 +23,11 @@ software diagnosis, improvement and deployment are not.
 
 ![Data intake: collection, job and tender filters, retained exclusions, canonical storage, research and site selection](data-to-site.png)
 
-This **30 October** diagram distinguishes collection, admission and visibility. Email and external
+This diagram separates collection, admission and visibility. Email and external
 adapters retain observations; automatic vacancies/tenders pass eligibility and capacity checks.
 Reviewed input and validated research use the existing record writers. Read-time selection decides
 what appears prominently; a saved record can remain searchable reference. The diagram also shows
 where missing, rejected, quarantined and deferred inputs can be investigated.
-
-The backfill and application records are live. The broader title matching and Rippling reader are
-implemented but await deployment, as labelled in the figure. This new download is delivered through
-the repository; the hosted guide currently contains the original four diagrams. No site deployment
-is needed to open or download the linked PNG/SVG here.
 
 ## Full system
 
@@ -42,8 +35,8 @@ is needed to open or download the linked PNG/SVG here.
 
 ![Full system: sources, Cloudflare, VPS research, deployment and recovery](system-map.png)
 
-The live database is on the VPS. The diagrams below show the established LinkedIn path;
-Jack and Jill uses that same path once activated (current evidence).
+The live database is on the VPS. The diagrams below show the LinkedIn job-alert path; Jack and
+Jill alerts can use the same path.
 Gmail currently forwards only LinkedIn job-alert mail to
 `alerts@example.com`. Cloudflare retains it until the VPS has durably received it.
 Both the email worker and daily source scanners import through the existing canonical service.

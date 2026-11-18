@@ -19,7 +19,6 @@ they do not own private career facts or prove a multi-user service exists.
 | What experience supports a claim? | Career evidence and its linked evidence. September materials retain historical claims; current positioning belongs in [config/profile.yml](../config/profile.yml). Resolve conflicting facts from their dated sources before reuse. |
 | What is currently in Gmail, or was actually sent? | Gmail for current mailbox state; library entries are snapshots. Site outcomes record reported events and do not synchronize mail. |
 | What determines eligibility, fit, collection or research? | [Configuration ownership](configuration.md), then the named executable config and reader. Old rates, modes and plans do not override them. |
-| What belongs in the public copy? | [Public export runbook](public-export.md); exporting is separate from pushing this private repository. |
 
 ## Message library: sources and generated views
 

@@ -32,7 +32,7 @@ FROM='from="100.64.0.0/10,192.168.1.0/24,fe80::/10,fd00::/8,127.0.0.1,::1"'
 # Keys allowed to log in to either Mac, as fingerprint then line: each Mac's ~/.ssh/work_ops_vps (the
 # same key it uses for the VPS), then the iPhone's Termius SSH ID key (the one seen in a login).
 MAC_KEYS=(
-  "SHA256:examplefingerprintreplacewithyourownkeyAAAAA $FROM ssh-ed25519 AAAAexamplePublicKeyReplaceWithYourOwn owner@macbookair upcloud-vps ops"
+  "SHA256:examplefingerprintreplacewithyourownkeyAAAAA $FROM ssh-ed25519 AAAAexamplePublicKeyReplaceWithYourOwn owner@owner-mac upcloud-vps ops"
   "SHA256:examplefingerprintreplacewithyourownkeyAAAAA $FROM ssh-ed25519 AAAAexamplePublicKeyReplaceWithYourOwn work-ops-macmini"
   "SHA256:examplefingerprintreplacewithyourownkeyAAAAA $FROM ecdsa-sha2-nistp256 AAAAexamplePublicKeyReplaceWithYourOwn #SSH ID - @example"
 )
@@ -40,7 +40,7 @@ MAC_KEYS=(
 CONF_TEXT='# Managed by work-ops ops/mac-ssh setup; change it there. Everything here goes over the tailnet.
 Host air
   HostName 100.64.0.21
-  User macbookair
+  User owner
   HostKeyAlias air
 Host mini
   HostName 100.64.0.22

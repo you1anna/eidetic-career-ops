@@ -2,13 +2,10 @@
 
 [Documentation index](README.md) · [Repository home](../README.md)
 
-How ingestion, source evidence, SQLite records and the hosted workspace fit together. Scanner
-contracts are in [scanners.md](scanners.md); adapter work is in
-[adding-a-source.md](adding-a-source.md). The operating runbook for new data (scans, LinkedIn
-exports, research batches, quality and repair) is [data-pipeline.md](data-pipeline.md).
-
-For the complete deployed topology, schedules and recovery boundaries, use the
-[system map and PNG diagrams](system-map.md). This page owns code boundaries and invariants.
+How the code fits together: collection, source evidence, the SQLite records and the workspace.
+This page owns the code boundaries and invariants. [Source adapters](scanners.md) and
+[adding a source](adding-a-source.md) cover collection, the [data pipeline](data-pipeline.md)
+covers new data, and the [system diagrams](system-map.md) show the deployed system.
 
 ## System shape
 
@@ -32,8 +29,7 @@ scan_news.py ────┘
 ```
 
 `config/portals.yml` owns source definitions, `config/collection.yml` owns request policy, and `config/channels.yml` describes coverage. Discovery adapters are run by `wo ingest`, manually or on the VPS daily schedule with `--keyless` plus the keyed sources the owner approved
-by name (`wo-scan.timer`, about 05:30 UTC; decisions #18, #29 and #39). The Markdown hub import
-and `records/hub/` were retired on 27 September (git tag `pre-cleanup-2026-09`).
+by name (`wo-scan.timer`, about 05:30 UTC).
 
 Email uses a separate `wo-email.timer` every 15 minutes: Cloudflare D1 → private VPS spool →
 `scan_alerts.py` → the same canonical importer. Run receipts use `email:` and `email-import:`

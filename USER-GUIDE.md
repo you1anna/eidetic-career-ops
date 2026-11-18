@@ -3,26 +3,16 @@
 [First useful result](#your-first-useful-result) · [Jobs](#track-jobs-and-applications) ·
 [People](#act-outside-the-site-then-record) · [Recovery](#when-something-goes-wrong)
 
-Find worthwhile work, resume an existing process, and retrieve relationship context. Prepare wording
-in **People → Send messages** or your usual communication tool, then send externally. The site keeps evidence and optional factual progress; it does not
-require an email to be generated, approved, pasted or saved here.
+Use the workspace to find work worth pursuing, follow your applications and look up what you know
+about a person. You send every message yourself, in Gmail or another tool. The site can prepare
+the wording and record what happened.
 
-In this demo snapshot the guide describes the private deployment. To try the screens, run the
-workspace locally on synthetic data, as the README explains.
-
-## Local outreach preview
-
-Use the synthetic preview described in [local setup](ops/LOCAL.md), with invented records. Existing
-saved previews and their wording are historical evidence, not instructions to resume their workflow.
-In the current preview, try the four tasks under [validation](#validate-the-outreach-features).
-No live data, external send or deployment is needed.
+This guide describes the private deployment. To try the screens on made-up records,
+[run the workspace locally](README.md#run-it-locally). The local workspace has no sign-in.
 
 ## Sign in
 
-This guide follows the repository version; release status
-identifies changes that have not reached the site yet.
-
-Open [work.example.com](https://work.example.com) on your Mac or phone. Enter your authorized email address and press **Send login code**, then enter the six-digit code from the email. Sessions stay signed in for **one week** on each browser or device.
+On the private deployment, open [work.example.com](https://work.example.com) on your Mac or phone. Enter your authorized email address and press **Send login code**, then enter the six-digit code from the email. Sessions stay signed in for **one week** on each browser or device.
 
 If a code does not arrive within a minute, check the newest message in your inbox or spam folder before requesting another code (requesting a new code invalidates the previous one).
 
