@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "platform": "darwin",
+  "arch": "arm64",
+  "osRelease": "27.2.0",
+  "osVersion": "Darwin Kernel Version 27.2.0: Wed Oct 14 23:47:07 PDT 2026; root:xnu-13432.41.4~25/RELEASE_ARM64_T8132",
+  "browser": "chromium",
+  "browserVersion": "151.0.7922.34",
+  "playwright": "1.62.0",
+  "viewport": {
+    "width": 1300,
+    "height": 900
+  },
+  "deviceScaleFactor": 1,
+  "locale": "en-GB",
+  "timezoneId": "UTC",
+  "colorScheme": "light",
+  "reducedMotion": "reduce",
+  "screenshotScale": "css",
+  "capturePolicy": "viewport-mobile-content-v1",
+  "clock": "2026-11-06T12:00:00.000Z",
+  "comparison": {
+    "threshold": 0.1,
+    "includeAA": false
+  }
+}

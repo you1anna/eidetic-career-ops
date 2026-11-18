@@ -1,0 +1,34 @@
+[Unit]
+Description=One-time zero-model acceptance of Monday research
+ConditionPathExists=/srv/work-ops/data/work-ops.db
+ConditionPathExists=!/srv/work-ops/data/research-acceptance/2026-10-19/.done
+StartLimitIntervalSec=3600
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+User=workops
+Group=workops
+UMask=0077
+Environment=TZ=Europe/London
+WorkingDirectory=/srv/work-ops/work-ops
+ExecStart=/srv/work-ops/venv/bin/python tools/research_acceptance.py --db /srv/work-ops/data/work-ops.db --data /srv/work-ops/data --date 2026-10-19
+TimeoutStartSec=90
+Restart=on-failure
+RestartSec=300
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+PrivateNetwork=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+ReadOnlyPaths=/srv/work-ops/data
+ReadWritePaths=/srv/work-ops/data/research-acceptance
+InaccessiblePaths=/srv/work-ops/.ssh /home/codex
+MemoryMax=256M

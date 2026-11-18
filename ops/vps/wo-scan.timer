@@ -1,0 +1,10 @@
+[Unit]
+Description=Run wo ingest --keyless daily at about 05:30 UTC (decision #18)
+
+[Timer]
+OnCalendar=*-*-* 05:30:00 UTC
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

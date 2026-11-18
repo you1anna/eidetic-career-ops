@@ -1,0 +1,11 @@
+[Unit]
+Description=One-time Monday research acceptance on 19 October 2026
+
+[Timer]
+OnCalendar=2026-10-19 10:05:00 Europe/London
+Persistent=true
+AccuracySec=1s
+Unit=wo-research-acceptance.service
+
+[Install]
+WantedBy=timers.target

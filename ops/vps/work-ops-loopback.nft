@@ -1,0 +1,26 @@
+#!/usr/sbin/nft -f
+# work-ops loopback access guard (decision #24 hardening; security review 23 October 2026).
+#
+# Installed by `ops/vps/harden.sh workspace-loopback` as /etc/work-ops/loopback.nft with the @...@
+# account ids filled in, and loaded on every boot by work-ops-loopback-guard.service. Undo with
+# `ops/vps/harden.sh workspace-loopback-revert`.
+#
+# Why: the private workspace listens on 127.0.0.1:8769 and is published only through the Cloudflare
+# Tunnel with Access in front of it. The server itself does not authenticate; it trusts that Access
+# already did. But any local account can open 127.0.0.1:8769 directly and so skip Access entirely —
+# in particular the `codex` research/dev account, which runs model sessions over untrusted web
+# content. This refuses a loopback connection to :8769 from every account except the tunnel connector
+# (cloudflared) and the service and admin accounts, so direct local access no longer bypasses Access.
+#
+# `meta skuid` matches the owner of the connecting process. The server's own replies leave from
+# sport 8769, not dport 8769, so they are never matched. The add/delete/add header makes the file
+# idempotent: re-loading it replaces the table cleanly.
+table inet work-ops-loopback
+delete table inet work-ops-loopback
+table inet work-ops-loopback {
+    chain output {
+        type filter hook output priority -10; policy accept;
+        oifname "lo" tcp dport 8769 meta skuid { 0, @WORKOPS_UID@, @CLOUDFLARED_UID@, @OPS_UID@ } accept
+        oifname "lo" tcp dport 8769 reject with tcp reset
+    }
+}

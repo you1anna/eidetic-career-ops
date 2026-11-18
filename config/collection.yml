@@ -1,0 +1,31 @@
+# One owner for collection limits; release this file to change the running policy.
+# Provider account allowances are informational. Failed/uncertain attempts spend the site limit.
+version: 1
+timezone: Europe/London
+background_days: [Tuesday, Friday]
+refresh_after_hours: 24
+providers:
+  adzuna:
+    daily_limit: 10
+    scheduled_target: 6
+    min_interval_seconds: 4.1
+    full_discovery_limit: 2
+    account: {minute: 15, day: 150, week: 750, month: 1500, observed: '2026-10-29'}
+  reed:
+    daily_limit: 10
+    scheduled_target: 6
+    min_interval_seconds: 2.6
+    full_discovery_limit: 2
+    search_limit: 4
+    detail_limit: 2
+    account: {confirmed: false}
+  greenhouse: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0, full_discovery_limit: 2}
+  lever: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0, full_discovery_limit: 2}
+  ashby: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0, full_discovery_limit: 2}
+  smartrecruiters: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0, full_discovery_limit: 2}
+  rippling: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0, full_discovery_limit: 2}
+  companies-house: {daily_limit: 10, scheduled_target: 9, min_interval_seconds: 0.35, refresh_days: 30, company_limit: 3}
+  hn_algolia: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0}
+  contracts_finder: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0}
+  find_a_tender: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0}
+  uktn: {daily_limit: 10, scheduled_target: 6, min_interval_seconds: 0}

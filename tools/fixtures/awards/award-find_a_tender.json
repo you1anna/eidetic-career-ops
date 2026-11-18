@@ -1,0 +1,24 @@
+{
+  "releases": [{
+    "ocid": "ocds-test-ai-delivery",
+    "id": "000002-2026",
+    "date": "2026-10-02T12:00:00Z",
+    "tag": ["award", "contract"],
+    "buyer": {"id": "buyer-2"},
+    "parties": [
+      {"id": "buyer-2", "name": "Example Public Service", "roles": ["buyer"]},
+      {"id": "supplier-2", "name": "Example Evaluation Company", "roles": ["supplier"]},
+      {"id": "supplier-3", "name": "Example Integration Company", "roles": ["supplier"]}
+    ],
+    "tender": {"title": "AI assurance and integration", "description": "Software assurance for an existing AI workflow.", "classification": {"id": "72200000"}},
+    "awards": [
+      {"id": "award-2", "status": "active", "suppliers": [{"id": "supplier-2"}, {"id": "supplier-3"}]},
+      {"id": "award-3", "status": "active", "suppliers": [{"name": "Example Small Partner"}]}
+    ],
+    "contracts": [
+      {"id": "contract-2", "awardID": "award-2", "status": "active", "dateSigned": "2026-09-30", "value": {"amount": 180000, "currency": "GBP"}, "period": {"startDate": "2026-10-15", "endDate": "2027-10-14"}},
+      {"id": "contract-3", "awardID": "award-3", "status": "active", "value": {"amount": 70000, "currency": "EUR"}, "period": {"startDate": "2026-10-20", "endDate": "2027-10-19"}}
+    ]
+  }],
+  "links": {}
+}

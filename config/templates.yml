@@ -1,0 +1,509 @@
+# The owner's outreach templates (an example pack for the fictional candidate in config/profile.yml), as data. Read by search_config.templates()
+# into the full state; the site's note box is retired. The /notes command starts from the same
+# template and applies the same checks (tools/note_context.py).
+#
+# Reading format, rendered by workspace/js/message-format.js: **phrase** for emphasis, a run of
+# "1. " lines for a numbered list, and "- " lines for bullets. The stored note stays this text.
+#
+# The owner's wording, kept as written. Kept out of this file and off the site: real people's names and
+# threads, and any rate (rates stay in local research notes). A {{placeholder}} the record cannot fill stays in the note as a gap; a note
+# with a gap cannot be copied or recorded as sent.
+
+rules:
+  - "Every email has one primary ask and at most two fallbacks. One clear ask gets answered; a list gets parked."
+  - "Open with a personal line only this person could receive: your last conversation, something they posted, a shared memory, their new role. Never \"Hope you're well\" on its own."
+  - "Lead with the shape of work that fits what they can open, and give the other two a clause. Broad about you, specific about the ask."
+  - "Keep warm emails under 150 words. Recruiter emails can run longer, because recruiters scan for facts."
+  - "Every first approach carries one link: portfolio.example.com. Attach your CV when it helps, always for recruiters and applications: the note box says which one. Otherwise the site's Request CV link covers it."
+  - "Send Tuesday to Thursday, 8 to 10am. Follow up once after seven days, then stop until you have news."
+  - "Don't send identical text to people who know each other."
+  - "If WorkOps creates Gmail drafts through an API, check every link before sending. Links added that way came back wrapped in a google.com redirect, which corporate filters can treat as phishing. Write the bare domain, or add https:// by hand in Gmail."
+
+# When the pack says a message lands best (Europe/London): Tuesday to Thursday, 8 to 10am.
+send_window: {days: [2, 3, 4], from_hour: 8, to_hour: 10, say: "Lands best Tuesday to Thursday, 8 to 10am."}
+
+# What every first approach carries (19 October): the link to the owner's site, and room for a CV when
+# it helps. Follow-ups are exempt: the first note already carried both. The CV is attached, never linked
+# (the Google Docs in config/cvs.yml are private). The note box shows which CV to attach and adds or
+# removes `cv_line`; a note whose wording already says a CV is attached (`cv_attached`) keeps its own.
+first_approach:
+  link: portfolio.example.com
+  missing: "No link to portfolio.example.com: every first approach includes it."
+  cv_line: "I've attached my CV in case it's useful."
+  cv_attached: '\bCV\b[^.\n]*\battach|\battach\w*\b[^.\n]*\bCV\b'
+
+# Conservative unattended variants. A personal line is traced to the owner's recorded note, using
+# explicit relationship clauses and finite pronoun conversions (not generated paraphrases of
+# public text). The model may select or decline
+# a supplied draft, but cannot add claims. Human-written notes keep the full templates below.
+# The three shapes are numbered in lead order, and the one ask is emphasised.
+preparation:
+  body: |-
+    Hi {first_name},
+
+    {personal_line}
+
+    {exit} The short version is on my site: portfolio.example.com
+
+    Most of what I'm good at comes down to making software and AI dependable. That might mean:
+    1. {shape_1}
+    2. {shape_2}
+    3. {shape_3}
+
+    **{ask}**
+
+    Thanks,
+    Morgan
+  asks:
+    catch_up: "Would you be up for a 30-minute call in the next couple of weeks? I'd like to hear what you're working on, and get your take on where someone like me fits best."
+    introduction: "Do you know anyone hiring a Head or Director of Engineering, or a Head of QE? I'd value a referral or an introduction."
+    availability: "I'm available now for contract or interim work. Do you have a current brief where my experience could help?"
+
+core:
+  intro: "The through-line matches the site: fifteen years making software dependable, now doing the same for AI. Every template is built from these blocks."
+  lines:
+    - {id: range, title: Range line, note: "Order the three shapes for the reader.",
+       text: "Most of what I'm good at comes down to making software and AI dependable. That might mean {{shape_1}}, {{shape_2}}, or {{shape_3}}."}
+    - {id: availability, title: Availability line,
+       text: "I'm taking contract work now, and I'm open to the right permanent role. I'm in London, happy on-site or remote."}
+    - {id: exit, title: Exit line, note: "True, neutral, and nothing more in writing.",
+       text: "Since leaving Example Corp in May, I've been working independently."}
+    - {id: fit, title: Fit line, note: "Use it with founders and friends. It filters out big-company roles without saying so.",
+       text: "I do my best work in smaller teams, where I can own the outcome."}
+
+# The three shapes of work, in the pack's order. The note box leads with the shape matching the CV
+# prepared for that person (`cvs`, keys from config/cvs.yml), else with Lead; the owner can switch.
+shapes:
+  - {id: lead, label: Lead, wording: "leading an engineering team",
+     lead_for: "CTOs, founders, engineering directors, fractional platforms", cvs: [Director, Manager]}
+  - {id: build, label: Build, wording: "building AI products hands-on",
+     lead_for: "AI startups, founding and forward-deployed roles", cvs: [FDE, Founding]}
+  - {id: fix, label: Fix, wording: "coming into a system that's struggling and fixing how it ships",
+     lead_for: "QE peers, scale-ups with delivery pain, Head of QE roles", cvs: [QE, QELead]}
+
+proofs:
+  intro: "Use two per email, matched to the shape you lead with."
+  items:
+    - {id: P1, best_for: "Lead", text: "Grew Example Corp's quality engineering team from 3 to 12 engineers across two offices, supporting 150 people in product and engineering"}
+    - {id: P2, best_for: "Build, Fix", text: "Built the test suite and release evidence for Example Corp's first customer-facing AI assistant, covering prompt injection, tenant isolation and personal data"}
+    - {id: P3, best_for: "Lead, Fix", text: "Built a Python pipeline that analysed hundreds of production incidents and put an annual cost on the preventable ones"}
+    - {id: P4, best_for: "Fix", text: "Built the test framework and CI behind about 1,000 end-to-end tests, still in use after a change of ownership"}
+    - {id: P5, best_for: "Build", text: "Built an AI pull-request review agent into the developer workflow"}
+    - {id: P6, best_for: "Connectors, recruiters", text: "Spoke at a London testing conference to about 150 people on observable test automation"}
+    - {id: P7, best_for: "Build (AI security), recruiters", text: "Secure data systems and threat modelling at a defence systems integrator"}
+    - {id: P8, best_for: "Build, founders", text: "Rebuilt a client's data scoring system and public-data pipelines, and built them a pilot AI email assistant"}
+    - {id: P9, best_for: "Lead", text: "Ran a training programme that took people from outside engineering into quality engineering"}
+
+# The pack's "Don't say" list, checked in every note on the site and by tools/note_context.py.
+# `match` is a regular expression (case-insensitive unless `case: sensitive`); keep it to syntax that
+# Python and JavaScript read the same way.
+dont_say:
+  - say: "The 31.4% defect escape rate. It was a team figure, and you've kept it private."
+    why: "a team figure you've kept private"
+    match: '31[.,]4\s*%'
+  - say: "The 0.5% flake rate, \"0 to 12\" or 1:20. Dropped or wrong."
+    why: "dropped or wrong"
+    match: '0[.,]5\s*%|\b0 to 12\b|\b1:20\b'
+  - say: "A RAG test count, until you've picked one (see Before you send)."
+    why: "no RAG test count until you've picked one"
+    match: '\b(?:180|200|50)\b(?:[\s-]+[a-z]+){0,3}?[\s-]+tests?\b'
+  - say: "\"Head of Quality Engineering\" as a title, until it's confirmed."
+    why: "not as your title until it's confirmed"
+    match: '\bhead of quality engineering\b'
+  - say: "\"Redundant\", \"let go\", or anything about a former employer's decisions, in writing."
+    why: "nothing about how you left, in writing"
+    match: '\bredundan\w*|\blet go\b|\blaid off\b'
+  - say: "\"QA\" as the first word about yourself. Lead with the shape, not the function."
+    why: "lead with the shape of work, not the function"
+    match: '\bQA\b'
+    case: sensitive
+  - say: "leverage, passionate, journey, robust, seamless, transformative, empower, unlock."
+    why: "on your list of words to avoid"
+    match: '\b(?:leverag\w*|passionate\w*|journey\w*|robust\w*|seamless\w*|transformative|empower\w*|unlock\w*)\b'
+
+# Further checks on how a note reads (the 16 October rules for the notes, .claude/commands/notes.md).
+# A template can waive one (`waive`), as the recruiter email does for its bullet lists.
+checks:
+  - {id: hope, multiline: true, match: '^\s*hope (?:you.re|you are|all.s|all is) (?:well|good)\W*$',
+     say: "Open with a personal line only they could receive, not \"Hope you're well\" on its own."}
+  - {id: canned, match: '\bnews from me:', say: "Artificial phrasing: canned transition \"News from me:\""}
+  - {id: canned, match: '\ba quick update since we last spoke:', say: "Artificial phrasing: canned transition \"A quick update since we last spoke:\""}
+  - {id: canned, match: 'hope you.re good,\s+and that .+ is treating you well', say: "Artificial phrasing: formulaic opener \"Hope you're good, and that <Company> is treating you well\""}
+  - {id: canned, match: 'hope you.re good,\s+and that .+ was a good one', say: "Artificial phrasing: formulaic opener \"Hope you're good, and that <Event> was a good one\""}
+  - {id: canned, match: "i.d value your judgement on something", say: "Artificial phrasing: stiff opener \"I'd value your judgement on something\""}
+  - {id: dashes, match: '[—–]', say: "Punctuation: contains an em/en dash (use a comma, full stop or brackets)"}
+  - {id: bullets, multiline: true, match: '^\s*[-*•]\s+', say: "Formatting: a bullet list in a message (keep bullets for recruiter emails)"}
+  - {id: positioning, match: '\b(?:qe|quality engineering|test manager|head of qa|qa lead)\b',
+     unless: '\b(?:head of engineering|director of engineering|engineering manager|engineering leadership|engineering team|forward deployed|founding engineer|ai evaluation|ai and systems|ai products|building ai|systems engineering|production app|flutter|python)\b',
+     say: "Positioning: frames you around QE only, without leading teams or building AI"}
+
+# Placeholders: what goes in each. `fill` names what the site fills from the record or this pack;
+# anything else is a gap the owner fills, helped by `examples` and by `suggest` (choices worked out on the
+# page), each tapped to insert. {{company}} is filled only from the employer recorded on the site;
+# LinkedIn's September snapshot is offered as a choice. {{day_rate}} is never filled.
+placeholders:
+  first_name: {label: First name, help: "Their first name", fill: first_name}
+  personal_line: {label: Personal line, help: "One sentence only they could receive: your last conversation, something they posted, a shared memory, their new role. Never \"Hope you're well\" on its own."}
+  company: {label: Their company, help: "Their current company", fill: company, suggest: linkedin_company}
+  reason: {label: Why their company, help: "Why their company came to mind, as a clause"}
+  shape_1: {label: First shape, help: "The shape of work you lead with", fill: shapes}
+  shape_2: {label: Second shape, help: "The second shape of work", fill: shapes}
+  shape_3: {label: Third shape, help: "The third shape of work", fill: shapes}
+  problem_profile:
+    label: Who you want named
+    help: "Who you want named"
+    examples: ["scaling an engineering team and feeling it creak", "about to put AI in front of customers and not sure it's safe",
+               "trying to work out if AI coding tools are actually helping", "hiring an engineering lead and not finding one"]
+  give_line:
+    label: Something useful to them
+    help: "One offer that's useful to them. Give before you ask: it's what makes the ask feel like an exchange."
+    examples: ["If it's useful, I'm happy to show you how I measured the cost of preventable incidents.",
+               "If you're putting AI in front of customers, I'm happy to share how I tested ours for release."]
+  proof_1: {label: First proof point, help: "A proof point from the library", fill: proofs}
+  proof_2: {label: Second proof point, help: "A proof point from the library", fill: proofs}
+  blurb_paragraph: {label: Forwardable paragraph, help: "The forwardable paragraph", fill: blurb}
+  day_rate: {label: Day rate, help: "Your contract day rate. Still to set, with your IR35 position: recruiters ask in the first minute, and an undecided rate gets undercut."}
+  where_met: {label: Where you met, help: "Where and when you met"}
+  month: {label: Month to check back, help: "When you'll check back", suggest: months}
+  shared_topic: {label: Shared topic, help: "A topic from your last conversation"}
+  what_they_saw:
+    label: What they saw
+    help: "Pick what they saw first-hand."
+    examples: ["the team grow from 3 to 12", "the AI assistant get to a release decision", "the incident cost work"]
+  role_headline: {label: Role headline, help: "The desk's headline", fill: desk}
+  role_targets: {label: Roles you want, help: "The roles on that desk", fill: desk}
+  where_seen: {label: Where you saw them, help: "Where you saw them or their role, e.g. a post or a brief they're recruiting for"}
+  other_desk: {label: Other desk, help: "Roles on another desk", suggest: other_desks}
+  their_subject: {label: Their subject line, help: "The subject of their email"}
+  why_not:
+    label: Why not this one
+    help: "Why this role isn't right. If the role is close, such as a contract Head of QE on an AI product, take the call instead."
+    examples: ["more hands-on testing", "narrower", "more junior"]
+  their_product: {label: Their product, help: "Their product"}
+  problem_short: {label: The problem in a few words, help: "The problem, in a few words"}
+  problem_hypothesis: {label: Their likely problem, help: "Their likely problem, as a condition", suggest: problems}
+  area: {label: What you'd look at, help: "What the short review would look at", suggest: problems}
+  their_community: {label: Their community, help: "The community or group they know"}
+  name: {label: Who you're speaking to, help: "The person they introduced, or you spoke to"}
+  date: {label: When, help: "When you're speaking"}
+  outcome: {label: What came of it, help: "What came of it"}
+
+# The ask ladder: each rung is easier to say yes to than the one above.
+ladder:
+  intro: "Pick one rung as the primary ask, then add one or two rungs below it as fallbacks. Each rung is easier to say yes to than the one above."
+  rungs:
+    - {n: 1, title: Direct referral, text: "Is there anything at {{company}} where this would help? If so, would you be happy to refer me, or point me to the hiring manager?"}
+    - {n: 2, title: A call, text: "Would you be up for 30 minutes in the next couple of weeks? I'd value your take on where I fit best."}
+    - {n: 3, title: One name, text: "Who's the one person you'd call about this? Someone {{problem_profile}}. A name is enough."}
+    - {n: 4, title: A recruiter they rate, text: "Is there a recruiter you'd actually recommend? Contract or permanent, engineering leadership or AI."}
+    - {n: 5, title: A talent or hiring contact, text: "Do you know anyone in talent or hiring at a company that's growing its engineering team?"}
+    - {n: 6, title: Where roles surface early, text: "Are there any communities, Slack groups or events where roles like this come up before they're advertised?"}
+    - {n: 7, title: Their view, text: "Reading the site, which of the three would you lead with for someone like me?"}
+    - {n: 8, title: A reference, text: "Would you be happy to be a reference when it gets to that stage?"}
+    - {n: 9, title: Permission to come back, text: "If nothing comes to mind now, would you mind if I checked in again in {{month}}?"}
+  who:
+    - {contact: Warm professional contact, primary: "2", fallbacks: "3, 4"}
+    - {contact: Former colleague, primary: "1", fallbacks: "3, 4"}
+    - {contact: Former manager, primary: "2, framed as 7", fallbacks: "8, asked separately"}
+    - {contact: Friend, primary: "3", fallbacks: "4"}
+    - {contact: Recruiter, primary: "Their current briefs", fallbacks: "Colleagues on other desks"}
+    - {contact: Founder or CTO, primary: "A call about their problem", fallbacks: "3"}
+    - {contact: Connector, primary: "3, asking for two or three names", fallbacks: "The forwardable blurb"}
+    - {contact: Weak tie, primary: "3", fallbacks: "None"}
+
+blurbs:
+  intro: "Put the paragraph under your sign-off in friend and connector emails, so passing you on costs them nothing. When anyone offers an intro, reply with it straight away."
+  paragraph: "Morgan Sample is an engineer and engineering lead in London with 14 years across defence, retail and SaaS. At Example Corp they grew a team from 3 to 12 engineers and built the release evidence for the company's first customer-facing AI assistant. They're now independent, taking contract work and open to the right permanent role, from hands-on AI engineering to leading a team. portfolio.example.com"
+  one_liners:
+    - {shape: lead, text: "Morgan grew an engineering team from 3 to 12 at Example Corp, and is available as an interim or fractional engineering lead."}
+    - {shape: build, text: "Morgan built the release evidence for Example Corp's first customer-facing AI assistant, from prompt injection to tenant isolation, and now builds and tests AI products."}
+    - {shape: fix, text: "Morgan comes into teams where delivery is slipping and fixes how they ship. At Example Corp they put an annual cost on preventable incidents."}
+
+# One desk per recruiter.
+desks:
+  - {id: leadership, label: Engineering leadership, role_headline: "Interim engineering lead",
+     role_targets: "Interim or fractional Head of Engineering, or engineering lead at a small or scaling company",
+     proofs: [P1, P3], cvs: [Director, Manager]}
+  - {id: ai, label: AI, role_headline: "AI engineer, founding or forward-deployed",
+     role_targets: "Founding engineer, forward-deployed engineer, AI evaluation and reliability",
+     proofs: [P2, P5], cvs: [FDE, Founding]}
+  - {id: qe, label: Quality engineering, role_headline: "Interim Head of QE",
+     role_targets: "Interim Head of QE or test lead, ideally on an AI product",
+     proofs: [P2, P4], cvs: [QE, QELead]}
+
+# The founder template's likely problem and the review area that goes with it.
+problems:
+  - {problem_hypothesis: "you're about to put an AI feature in front of customers and can't yet show it's safe", area: "how your AI feature fails"}
+  - {problem_hypothesis: "releases have started to slip as the team grows", area: "your release process"}
+  - {problem_hypothesis: "your engineers are using AI coding tools and you can't tell if it's helping", area: "how you test and ship"}
+
+# Which template the note box starts from, by the person's kind on the site. The person's recorded ask
+# beats the pack's default for their type: a catch-up ask never turns into a referral request
+# (15 October), so those people start from the warm-contact template, which asks for a call.
+suggest:
+  by_kind: {peer: warm, former_colleague: former_colleague, former_manager: former_manager, friend: friend,
+            recruiter: recruiter, in_house_talent: recruiter, founder: founder, hiring_manager: founder,
+            introducer: connector}
+  when_catch_up: {former_colleague: warm, introducer: warm}
+  # No kind recorded: someone the owner has spoken to properly gets the warm template, anyone else the weak-tie one.
+  known_relationships: [warm, active, dormant]
+  otherwise: weak_tie
+
+# Subjects are used on email only; LinkedIn and WhatsApp notes start at the greeting. `short` replaces the
+# body on WhatsApp and text messages. `blurb: true` puts the forwardable paragraph under the sign-off on
+# email. `words` is the length the pack asks for.
+templates:
+  - id: warm
+    title: Warm professional contact
+    for: "For peers at other companies you've spoken to properly, at events or on calls. The ask is a call, because intros come out of conversations far more than out of emails."
+    words: 150
+    subject: "Catching up, and some news"
+    subject_note: "Subject alternatives: a phrase from your last conversation, or \"{{shared_topic}}, and some news\"."
+    body: |-
+      Hi {{first_name}},
+
+      {{personal_line}}
+
+      Some news from me. Since leaving Example Corp in May, I've been working independently, doing client work and building AI tools. The short version is on my site: portfolio.example.com
+
+      Most of what I'm good at comes down to making software and AI dependable. That might mean:
+      1. {{shape_1}}
+      2. {{shape_2}}
+      3. {{shape_3}}
+
+      I'm taking contract work now, and I'm open to the right permanent role.
+
+      **Would you be up for a 30-minute call in the next couple of weeks?** I'd like to hear what you're working on, and get your take on where someone like me fits best. {{give_line}}
+
+      If a call's hard to fit in, one name would help just as much: who do you know who's {{problem_profile}}? Or a recruiter you'd actually recommend.
+
+      Thanks,
+      Morgan
+
+  - id: former_colleague
+    title: Former colleague
+    for: "For people who've worked with you and moved on. They can refer you internally, and a referral from someone who knows your work beats any application, so ask for it directly."
+    words: 150
+    subject: "Quick one, {{first_name}}"
+    ideas: "Personal line ideas: something you shipped together, a joke from the team, their move to {{company}}, or a post of theirs."
+    body: |-
+      Hi {{first_name}},
+
+      {{personal_line}}
+
+      Since leaving Example Corp in May, I've been working independently. The short version is here: portfolio.example.com
+
+      You've seen how I work, so I'll be direct. I'm looking for my next thing, contract first:
+      1. {{shape_1}}
+      2. {{shape_2}}
+      3. {{shape_3}}
+
+      {{company}} came to mind because {{reason}}.
+
+      **Is there anything there you'd be happy to refer me for?** A referral from someone who's worked with me carries more weight than any application I could send.
+
+      If there's nothing right now, the next best thing is a name: someone in your network who's hiring, or a recruiter you'd trust. If you pass me on, there's a CV link at the bottom of the site.
+
+      Either way, let's get a coffee soon. My shout.
+
+      Morgan
+
+  - id: former_manager
+    title: Former manager or senior leader
+    for: "For people who managed you or sat above you. Senior people get asked for jobs all the time and for their judgement far less, so ask for their view. The names follow."
+    words: 150
+    subject: "Your view on one thing"
+    body: |-
+      Hi {{first_name}},
+
+      {{personal_line}}
+
+      Since leaving Example Corp in May, I've been working independently, and I'm now looking for what's next, contract first. The short version is here: portfolio.example.com
+
+      You saw {{what_they_saw}}. I'd like to do more of that, and more broadly:
+      1. {{shape_1}}
+      2. {{shape_2}}
+      3. {{shape_3}}
+
+      **Could I have 20 minutes of your time in the next few weeks?** I'd value your honest view on which of those to lead with, and on who you'd put me in front of.
+
+      Separately, would you be happy to be a reference when it gets to that stage?
+
+      Thanks,
+      Morgan
+
+  - id: friend
+    title: Friend
+    for: "For friends, in tech or not. Friends want to help but don't know how, so give them a question they can answer: who runs tech where they are."
+    words: 150
+    subject: "A small favour"
+    blurb: true
+    body: |-
+      Hey {{first_name}},
+
+      {{personal_line}}
+
+      Bit of news: since leaving Example Corp I've gone independent, and I'm looking for my next project or role. Here's the short version: portfolio.example.com
+
+      In plain English, I help companies build software and AI that works properly, either by running the engineering team or by getting stuck in myself.
+
+      **Small favour: who runs tech where you work, or in your circle?** A CTO, a founder, someone hiring engineers, or a recruiter. An intro would be brilliant, but even a name helps.
+
+      No pressure at all. Pint's on me next time either way.
+
+      Morgan
+    short: |-
+      Hey {{first_name}}, quick favour. I've gone independent and I'm looking for my next contract or role in tech, running engineering teams or building AI. Do you know anyone who runs tech or hires engineers, at your place or in your circle? Even just a name helps. Short version of what I do: portfolio.example.com. Pint on me either way.
+
+  - id: recruiter
+    title: "Recruiter: first contact"
+    for: "Recruiters sort by role, rate, availability and location in the first few seconds. Give them those up front, pick one desk per recruiter, and offer something back: referrals."
+    waive: [bullets, positioning]
+    desk: true
+    subject: "{{role_headline}}, available now, London"
+    ideas: "\"No current security clearance\" saves both of you a call on defence roles that need it. Leave it out for recruiters who don't cover defence."
+    body: |-
+      Hi {{first_name}},
+
+      I saw {{where_seen}}, so I thought it worth getting in touch.
+
+      **Quick summary:**
+      - 14 years across defence, retail and SaaS, including six years at Example Corp.
+      - {{proof_1}}
+      - {{proof_2}}
+      - Now independent, working through my own limited company.
+
+      **What I'm looking for:**
+      - {{role_targets}}
+      - Contract first at {{day_rate}} a day. Open to permanent for the right role.
+      - Available now. Based in London, happy on-site in London or remote. Full UK right to work, no current security clearance.
+
+      CV attached, and more at portfolio.example.com
+
+      If nothing fits right now, two things would still help: which of your colleagues cover {{other_desk}}, and which of your clients are hiring for this. In return, I know a lot of good test and quality engineers, and I'm happy to send them your way.
+
+      Thanks,
+      Morgan
+
+  - id: recruiter_wrong_role
+    title: "Recruiter: wrong role"
+    for: "Most approaches will be test or QA roles, because that's what your history says. Don't ignore them. Turn them into a wider conversation and keep the recruiter warm, because a recruiter who placed someone off your suggestion remembers you."
+    waive: [positioning]
+    desk: true
+    subject: "Re: {{their_subject}}"
+    body: |-
+      Hi {{first_name}},
+
+      Thanks for thinking of me. This one's {{why_not}} than I'm after, so I'll pass, but I'd like to stay on your radar.
+
+      What I'm looking for: {{role_targets}}, contract first at {{day_rate}} a day, available now. More at portfolio.example.com
+
+      **Two quick questions:**
+      1. Is anyone on your team working on roles like that?
+      2. Would it help if I suggested someone for this one? I know a few good people who might fit.
+
+      Thanks,
+      Morgan
+
+  - id: founder
+    title: Founder or CTO at a small company
+    for: "For founders and CTOs you know a little, or not at all. Lead with their problem and what they get, not your CV, and offer a small fixed first step so yes is easy."
+    words: 150
+    subject: "{{their_product}} and {{problem_short}}"
+    ideas: "The personal line here does the heavy lifting: their launch, a job ad, a post, a funding round. Without one, this is a cold email."
+    body: |-
+      Hi {{first_name}},
+
+      {{personal_line}}
+
+      I help small teams make software and AI dependable. Recently that meant building the release evidence for a customer-facing AI assistant used by thousands of customers. Before that, I grew an engineering team from 3 to 12.
+
+      If {{problem_hypothesis}}, I can help, either for a few weeks or as a fractional lead. A good first step is usually a short, fixed-scope review: I look at {{area}}, and you get a written list of what's risky and what to fix first.
+
+      **Worth 30 minutes?** If it's not for you, I'd be grateful for a pointer to someone it might be.
+
+      Morgan
+      portfolio.example.com
+
+  - id: connector
+    title: Connector or community organiser
+    for: "For people whose value is who they know: event organisers, community leads, former talent partners. Ask for two or three names, make forwarding free, and offer their group something."
+    words: 150
+    subject: "Could you point me at two or three people?"
+    blurb: true
+    body: |-
+      Hi {{first_name}},
+
+      {{personal_line}}
+
+      You know more people in {{their_community}} than anyone I know, so I wanted to ask you directly.
+
+      Since leaving Example Corp in May, I've been working independently, and I'm looking for my next contract or role:
+      1. {{shape_1}}
+      2. {{shape_2}}
+      3. {{shape_3}}
+
+      Details at portfolio.example.com
+
+      **Who are two or three people you think I should talk to?** I've put a short paragraph below that you can forward as it is.
+
+      In return, I'm happy to run a session for your group on testing AI systems. I spoke at a London testing conference last year, to about 150 people.
+
+      Thanks,
+      Morgan
+
+  - id: weak_tie
+    title: Weak tie or LinkedIn connection
+    for: "For people you met once, or know only through LinkedIn. Keep it under 80 words and ask for the smallest thing: a name. Works as a LinkedIn message or an email."
+    words: 80
+    body: |-
+      Hi {{first_name}}, we met at {{where_met}}. {{personal_line}}
+
+      I've gone independent since leaving Example Corp, and I'm looking for my next contract or role, leading engineering teams or building AI products. Short version: portfolio.example.com
+
+      **Is there anyone you think I should talk to?** A name is plenty.
+
+      Thanks,
+      Morgan
+
+# Follow-ups and thank-yous, offered on the card at the step they belong to.
+followups:
+  intro: "One follow-up after seven days, in the same thread. After that, only come back with news. Thank connectors twice, because a connector who hears how it went introduces again."
+  items:
+    - id: bump
+      title: No reply after seven days
+      step: follow_up
+      body: |-
+        Hi {{first_name}}, bumping this in case it got buried. **Even one name would help.**
+
+        Thanks,
+        Morgan
+    - id: nothing_now
+      title: They say there's nothing right now
+      step: nothing_now
+      body: |-
+        Hi {{first_name}},
+
+        Thanks for looking, I appreciate it. Two smaller things would still help: a recruiter you'd recommend, or anyone you know who's {{problem_profile}}.
+
+        And if it's OK, I'll check in again in {{month}}.
+
+        Morgan
+    - id: intro_thanks
+      title: Same day as an intro, to the connector
+      step: introduction
+      body: "Thanks for the intro to {{name}}, {{first_name}}. We're speaking on {{date}}. I'll let you know how it goes."
+    - id: update
+      title: When something comes of it
+      step: update
+      body: "Hi {{first_name}}, quick update: I spoke to {{name}}, and {{outcome}}. Thanks again for making it happen. If I can ever return the favour, just say."
+
+# The owner's open decisions from the pack.
+before_you_send:
+  intro: "Decisions still open. The first two block every recruiter and founder email."
+  items:
+    - "Set {{day_rate}} and your IR35 position. Recruiters ask in the first minute, and an undecided rate gets undercut."
+    - "Price the fixed-scope review in the founder template."
+    - "Pick one RAG suite figure. The site and the CV give different counts."
+    - "Confirm your last title, and make the site and the CV agree."
+    - "Check \"May\" against LinkedIn and your CV."

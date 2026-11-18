@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Plan is read-only; activate/revoke require explicit security-change authority.
+exec python3 "$(dirname -- "${BASH_SOURCE[0]}")/local/provision_mac.py" "$@"

@@ -1,0 +1,49 @@
+[Unit]
+Description=work-ops daily ingest (wo ingest) into the canonical database
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/srv/work-ops/data/work-ops.db
+
+[Service]
+Type=oneshot
+User=workops
+Group=workops
+Environment=TMPDIR=/srv/work-ops/run
+Environment=TZ=Europe/London
+Environment=WO_DB=/srv/work-ops/data/work-ops.db
+# Keys for approved keyed sources (#29, #39): encrypted at rest in /etc/credstore.encrypted (root only),
+# decrypted into this run's $CREDENTIALS_DIRECTORY and read by tools/credentials.py, never put in the
+# environment. A missing one is not an error. Install with ops/vps/send-credential.sh (OPERATIONS.md).
+LoadCredentialEncrypted=COMPANIES_HOUSE_API_KEY
+LoadCredentialEncrypted=ADZUNA_APP_ID
+LoadCredentialEncrypted=ADZUNA_APP_KEY
+LoadCredentialEncrypted=REED_API_KEY
+LoadCredentialEncrypted=WO_ALERTS_IMAP_HOST
+LoadCredentialEncrypted=WO_ALERTS_IMAP_USER
+LoadCredentialEncrypted=WO_ALERTS_IMAP_PASSWORD
+WorkingDirectory=/srv/work-ops/work-ops
+ExecStart=/srv/work-ops/work-ops/ops/vps/wo-scan.sh
+TimeoutStartSec=1200
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+# Decision #27: the same kernel, namespace and system-call limits as the tunnel.
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+ReadWritePaths=/srv/work-ops/data /srv/work-ops/run
+InaccessiblePaths=/srv/work-ops/.ssh
+MemoryMax=512M

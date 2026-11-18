@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Check signing readiness, or interactively load this Mac's VPS key and prove SSH works.
+# --check: 0 ready (local key or successful SSH), 2 missing key, 3 unlock needed,
+#          4 inconclusive (agent permissions, network or another SSH failure).
+# A sandbox cannot inspect the login agent: that is not evidence of a locked key.
+set -euo pipefail
+KEY="${SSH_KEY:-$HOME/.ssh/work_ops_vps}"
+HOST="${SSH_USER:-ops}@${SERVER_HOST:-100.64.0.10}"
+[[ -r "$KEY" ]] || { echo "no VPS key at $KEY on this machine" >&2; exit 2; }
+fp=$(ssh-keygen -lf "$KEY" </dev/null | awk '{print $2}') || {
+  echo "cannot inspect VPS key at $KEY" >&2; exit 4;
+}
+agent_code=0; agent_output=
+ready() {
+  agent_code=0
+  agent_output=$(ssh-add -l 2>&1) || agent_code=$?
+  if [[ "$agent_code" == 0 ]] && grep -qF "$fp" <<<"$agent_output"; then return 0; fi
+  ssh-keygen -y -P '' -f "$KEY" >/dev/null 2>&1
+}
+SSH=(ssh -i "$KEY" -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=10 "$HOST" true)
+# Keep the existing Keychain recovery, but do not mask an inaccessible agent with it.
+usable=0
+if ready; then
+  usable=1
+elif [[ "$agent_code" -lt 2 && "$(uname)" == Darwin ]]; then
+  ssh-add --apple-load-keychain -q </dev/null >/dev/null 2>&1 || true
+  if ready; then usable=1; fi
+fi
+check_connection() {
+  local error
+  # Keychain or an existing SSH connection can work even when this process cannot inspect the agent.
+  if error=$(LC_ALL=C "${SSH[@]}" </dev/null 2>&1); then return 0; fi
+  if [[ "$agent_code" -ge 2 ]]; then
+    echo "cannot inspect this session's SSH agent: $agent_output" >&2
+    echo "Check session/agent permissions; the key lock state is unknown." >&2
+  elif [[ "$error" == *"Permission denied ("* ]]; then
+    echo "VPS authentication failed and the encrypted key is not loaded in the accessible SSH agent." >&2
+    echo "Run ops/vps-unlock in a terminal on this Mac; if authentication still fails, check key authorisation." >&2
+    return 3
+  fi
+  echo "VPS SSH check could not complete: $error" >&2
+  if [[ "$error" == *"timed out"* || "$error" == *"No route to host"* ]]; then
+    echo "The tailnet address may be unreachable: run 'tailscale status' on this Mac." >&2
+  fi
+  return 4
+}
+if [[ "${1:-}" == --check ]]; then
+  [[ "$usable" == 1 ]] && exit 0
+  check_connection; exit $?
+fi
+if [[ "$usable" != 1 ]]; then
+  if [[ "$agent_code" -ge 2 || ! -t 0 ]]; then
+    check_connection
+    echo "VPS SSH available; $HOST answers"
+    exit 0
+  fi
+  ssh-add "$KEY"
+fi
+"${SSH[@]}"
+echo "VPS key unlocked; $HOST answers"

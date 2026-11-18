@@ -1,0 +1,60 @@
+career/ops — Product vision
+October 2026
+https://work.example.com/career-ops
+
+Your next job is probably one conversation away.
+
+career/ops helps people find suitable work and a reason to get in touch. For outplacement providers, it is an opportunity to offer candidates research support between coaching sessions, using software that is already built and running.
+
+WHAT CHANGES
+1. Find suitable work and people who can help.
+Bring relevant roles, evidence of companies looking for help and people you know into the same search. See why an opportunity fits your experience and whether a contact could help you understand the work before you apply.
+
+2. Spend less time sorting through job listings.
+Get a small list with the research beside it: what the work involves, how it matches your experience and what still needs checking. Spend your time deciding what to pursue and preparing for conversations, with applications already under way kept in view.
+
+3. Support candidates between coaching sessions.
+Add a candidate research service to your existing programme, under your own brand. The proposed adviser view brings selected roles and questions into the session, so advisers can spend more time helping candidates choose and prepare. License or acquire the working software to build that service.
+
+HOW IT WORKS
+Direction → Discover → Assess → Connect → Continue → Review.
+Compare the duties, required experience, pay and location of a role. Check whether a contact can help, then apply or get in touch using your own email or messaging tool. Record the application stage and any agreed next action.
+
+The prototype limits the list to ten opportunities under consideration, including those still being checked, and adds at most ten automatically in seven days. Shortlisted roles and applications are kept separately. Earlier research remains searchable.
+
+THE TECHNOLOGY
+The research is built. Make it part of your service.
+The value to a provider is research that a candidate and adviser can use to make a decision. career/ops already collects opportunities, investigates selected leads and assesses their fit. A partner can build its service around that work, with its own brand and approach to coaching.
+
+Relevant work for each candidate
+The software combines job adverts, selected alerts and company information with the candidate’s experience and preferences. AI research investigates selected opportunities. This gives the candidate specific roles and questions to take into a conversation with an adviser.
+
+Reasons behind the recommendations
+Each assessment explains the fit, practical terms and unanswered questions, with sources to check. An adviser can examine the reasoning, challenge a weak match and help the candidate decide where to spend their time.
+
+Less software to build
+Collection, research, assessment and application tracking are already implemented in a running prototype. The code comes with tests and operating documentation. A partner’s development can focus on the candidate and adviser service, integrations and rollout.
+
+For a provider, the opportunity is to offer continuing job-search support alongside its advisers’ expertise. Licensing provides a basis for a branded service; acquisition gives the buyer ownership of the software and its future development.
+
+WHERE THINGS STAND
+- Working prototype (running today): scheduled source collection, AI research, suitability assessments and application tracking. The workspace keeps contact notes, decisions and their history. Built and tested for one user.
+- Commercial product (next to build): individual logins, simple onboarding, candidate-controlled adviser access, white-label branding, programme reporting, and data export and deletion controls. Multi-user security, integrations and capacity need development and testing.
+- Pilot (first step with a partner): a small group of candidates and advisers. Agree measures for recommendation relevance, research and adviser preparation time, interviews and placements over a defined period.
+
+The page’s Alex and Northbank examples are fictional. Adviser sharing and reporting illustrate the proposed service. Scheduled checks keep evidence under review; a completed pass does not mean every fact is confirmed. Candidates decide what to pursue and whether to change direction.
+
+TWO WAYS TO WORK TOGETHER
+1. License & adapt: add a candidate research service to your existing programme under your brand. Adapt it to your coaching model, with hosting, integration and support agreed together.
+2. Acquire & develop: own the software and product direction. Acquire the source code and documentation with a technical handover, then integrate and develop it for your client groups.
+Personal career records stay private and are never part of any deal.
+
+GOOD QUESTIONS FOR A FIRST CHAT
+- Where do candidates lose time or confidence when choosing what to pursue?
+- What evidence would help your advisers make sessions more useful?
+- What should a candidate choose to share, and what should stay private?
+- How would the software fit your existing service and technology?
+- Would licensing or acquisition suit you, and what results would justify further investment?
+
+NEXT STEP
+Book a walkthrough to see the software and discuss where it would fit your service. Agree the candidate group, development scope and results a pilot needs to demonstrate. Get in touch with the person who shared this brief.

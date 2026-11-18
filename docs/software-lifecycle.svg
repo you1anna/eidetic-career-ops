@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1110" viewBox="0 0 1800 1110" role="img" aria-label="Software improvement | the attended loop"><title>Software improvement | the attended loop</title><desc>22 October 2026 • This loop needs the owner and an operator • It is not a scheduled self-improvement service</desc><defs><marker id="flow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#257b7a"/></marker><marker id="research" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#7660a4"/></marker><marker id="admin" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#8b6d37"/></marker></defs><g font-family="Arial, Helvetica, sans-serif"><rect width="1800" height="1110" fill="#f5f8f8"/>
+<text x="40" y="58" font-size="38" fill="#173c3b" font-weight="700">Software improvement | the attended loop</text>
+<text x="40" y="96" font-size="20" fill="#51686b" font-weight="400">22 October 2026 • This loop needs the owner and an operator • It is not a scheduled self-improvement service</text>
+<text x="40" y="133" font-size="18" fill="#51686b" font-weight="400">Solid teal: server data flow  •  Dashed purple: model-assisted research  •  Dashed brown: human action / administration</text>
+<rect x="40" y="180" width="1720" height="300" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="215" font-size="22" fill="#173c3b" font-weight="700">1  NOTICE → CHOOSE → BUILD</text>
+<g data-box="Observe a problem or opportunity"><rect x="70" y="245" width="480" height="205" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="278" font-size="22" fill="#173c3b" font-weight="700">Observe a problem or opportunity</text>
+<text x="90" y="309" font-size="18" fill="#51686b" font-weight="400">Experience, receipts, research gaps and</text>
+<text x="90" y="333" font-size="18" fill="#51686b" font-weight="400">failure causes supply evidence.</text>
+<text x="90" y="357" font-size="18" fill="#51686b" font-weight="400">/caretaker brings findings into an</text>
+<text x="90" y="381" font-size="18" fill="#51686b" font-weight="400">attended chat; it is not automatic</text>
+<text x="90" y="405" font-size="18" fill="#51686b" font-weight="400">diagnosis.</text>
+</g>
+<g data-box="The owner directs attended work"><rect x="650" y="245" width="480" height="205" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="670" y="278" font-size="22" fill="#173c3b" font-weight="700">The owner directs attended work</text>
+<text x="670" y="309" font-size="18" fill="#51686b" font-weight="400">An agent investigates and</text>
+<text x="670" y="333" font-size="18" fill="#51686b" font-weight="400">proposes/implements an improvement within</text>
+<text x="670" y="357" font-size="18" fill="#51686b" font-weight="400">the request. Product priorities and</text>
+<text x="670" y="381" font-size="18" fill="#51686b" font-weight="400">missing release authority are resolved</text>
+<text x="670" y="405" font-size="18" fill="#51686b" font-weight="400">with the owner.</text>
+</g>
+<g data-box="Implement and validate locally"><rect x="1230" y="245" width="480" height="205" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1250" y="278" font-size="22" fill="#173c3b" font-weight="700">Implement and validate locally</text>
+<text x="1250" y="309" font-size="18" fill="#51686b" font-weight="400">Code + documentation; synthetic fixtures.</text>
+<text x="1250" y="333" font-size="18" fill="#51686b" font-weight="400">Test consequential behavior, HTTP</text>
+<text x="1250" y="357" font-size="18" fill="#51686b" font-weight="400">contracts, desktop Chromium and iPhone</text>
+<text x="1250" y="381" font-size="18" fill="#51686b" font-weight="400">WebKit. No live-data test writes.</text>
+</g>
+<path d="M550,335 L650,335" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<path d="M1130,335 L1230,335" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<rect x="40" y="520" width="1720" height="300" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="555" font-size="22" fill="#173c3b" font-weight="700">2  RELEASE → VERIFY → LEARN</text>
+<g data-box="Push main; authorise release"><rect x="1230" y="585" width="480" height="205" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1250" y="618" font-size="22" fill="#173c3b" font-weight="700">Push main; authorise release</text>
+<text x="1250" y="649" font-size="18" fill="#51686b" font-weight="400">GitHub stores code and documentation. A</text>
+<text x="1250" y="673" font-size="18" fill="#51686b" font-weight="400">push changes no live behavior. /deploy</text>
+<text x="1250" y="697" font-size="18" fill="#51686b" font-weight="400">requests the shared release workflow from</text>
+<text x="1250" y="721" font-size="18" fill="#51686b" font-weight="400">an authorised operator environment.</text>
+<text x="1250" y="745" font-size="18" fill="#51686b" font-weight="400">Migrations remain explicit.</text>
+</g>
+<g data-box="Deploy the pinned revision"><rect x="650" y="585" width="480" height="205" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="670" y="618" font-size="22" fill="#173c3b" font-weight="700">Deploy the pinned revision</text>
+<text x="670" y="649" font-size="18" fill="#51686b" font-weight="400">Dry-run first; strict checks before</text>
+<text x="670" y="673" font-size="18" fill="#51686b" font-weight="400">release. VPS fetches the exact pushed</text>
+<text x="670" y="697" font-size="18" fill="#51686b" font-weight="400">commit. Preserve timer states. Verify</text>
+<text x="670" y="721" font-size="18" fill="#51686b" font-weight="400">serving revision and hosted checks.</text>
+</g>
+<g data-box="Review real usefulness"><rect x="70" y="585" width="480" height="205" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="618" font-size="22" fill="#173c3b" font-weight="700">Review real usefulness</text>
+<text x="90" y="649" font-size="18" fill="#51686b" font-weight="400">The owner checks the result. Real</text>
+<text x="90" y="673" font-size="18" fill="#51686b" font-weight="400">scheduled execution, data coverage and</text>
+<text x="90" y="697" font-size="18" fill="#51686b" font-weight="400">human usefulness are separate from</text>
+<text x="90" y="721" font-size="18" fill="#51686b" font-weight="400">passing tests. Problems feed the next</text>
+<text x="90" y="745" font-size="18" fill="#51686b" font-weight="400">attended change.</text>
+</g>
+<path d="M1470,450 L1470,585" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<path d="M1230,680 L1130,680" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<path d="M650,680 L550,680" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<path d="M70,680 L20,680 L20,335 L70,335" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<g data-box="Not implemented • no autonomous software-improvement loop"><rect x="70" y="870" width="1640" height="145" rx="14" fill="#fff4db" stroke="#d3ae64" stroke-width="2"/>
+<text x="90" y="903" font-size="22" fill="#173c3b" font-weight="700">Not implemented • no autonomous software-improvement loop</text>
+<text x="90" y="934" font-size="18" fill="#51686b" font-weight="400">No scheduled model-powered incident diagnosis, weekly improvement reviewer, automatic code fix, commit/push or deployment. Scheduled model sessions have</text>
+<text x="90" y="958" font-size="18" fill="#51686b" font-weight="400">no shell or record-write tools. The attended VPS gateway permits requested record work only; the deploy key is read-only. The caretaker reports failures</text>
+<text x="90" y="982" font-size="18" fill="#51686b" font-weight="400">but does not repair them.</text>
+</g>
+<text x="40" y="1070" font-size="20" fill="#51686b" font-weight="400">Recovery is attended: inspect evidence, obtain any necessary authority, repair or roll back compatible code, then verify the live result.</text></g></svg>

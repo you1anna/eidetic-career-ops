@@ -1,0 +1,9 @@
+# Search the working code. Historical material and local data stay on disk.
+archive/
+data/
+evidence/
+records/
+**/__pycache__/
+**/node_modules/
+**/.venv/
+**/*.db

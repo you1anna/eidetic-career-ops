@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "work-ops-email-intake",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-07",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": { "enabled": true, "invocation_logs": false },
+    "traces": { "enabled": false }
+  },
+  "vars": {
+    "INTAKE_URL": "https://email-intake.example.invalid/v1/email",
+    "ALLOW_LOOPBACK_HTTP": "false"
+  },
+  "secrets": {
+    "required": ["INTAKE_TOKEN", "CF_ACCESS_CLIENT_ID", "CF_ACCESS_CLIENT_SECRET"]
+  }
+}

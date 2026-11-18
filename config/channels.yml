@@ -1,0 +1,311 @@
+# The source registry behind CLI coverage (`wo state`, coverage_report.py): every route by which work-ops finds roles, contract
+# demand, companies to approach, people and networks.
+#
+# Declared here: what a source finds, its method, access, when it runs, its rules and the decisions it
+# waits on. Measured, never declared: health, last read and yield come from the scanners' receipts
+# (source_health) and the records each source created (records.state()). A configured source with no
+# receipt is "no reads yet", not coverage.
+# This registry describes sources; it does not enable adapters or schedule runs. Adapter switches
+# live in portals.yml, and scheduled invocation lives in ops/vps/.
+#
+# finds:   roles | contracts | approach | people | networks
+# method:  api | rss | sitemap | derived | export | research | email | account | manual
+# access:  free | key-mac | key-server | account | relationship
+# runs:    daily (05:30 UTC on the server, wo-scan.timer) | attended (when a session runs it) | off | not-built
+# measure: provider_in (source_health providers) or scope_prefix; derived sources are counted from records.
+# decisions: record ids or workspace:<slug> subjects whose open decisions belong to the source.
+# Optional buyer, offer, next_step and links are reference notes for attended routes.
+channels:
+- id: employer-ats
+  name: Employer job boards (Greenhouse, Lever, Ashby, SmartRecruiters, Rippling)
+  finds: roles
+  method: api
+  access: free
+  runs: daily
+  rules: The employers' public job-board APIs and server-rendered Rippling boards;
+    tracked boards are listed in config/portals.yml and rotate under config/collection.yml, prioritising chosen work needing a refresh. Rippling reads one bounded page and reports
+    partial coverage when more pages exist; incomplete reads never establish vacancy absence.
+  gives: Each tracked employer's own open roles, with full advert text where supplied;
+    SmartRecruiters and Rippling supply listing facts only.
+  measure:
+    provider_in: [greenhouse, lever, ashby, smartrecruiters, rippling]
+  record: CS-003
+- id: aggregator-contract
+  name: Job aggregators (Adzuna, Reed)
+  finds: roles
+  method: api
+  access: key-server
+  runs: daily
+  rules: Documented search APIs with keys; shared daily call ceilings and pacing in config/collection.yml. You approved the
+    daily run on 1 Oct (#39); the keys are encrypted on the server and readable only by the daily run.
+  gives: Agency and employer adverts for engineering leadership, AI products, delivery reliability and
+    quality leadership. Daily reads use the approved keys on the server;
+    source terms are checked against the advert text and conflicting engagements need qualification.
+  measure:
+    provider_in: [adzuna, reed]
+  decisions: [workspace:feed-keys]
+- id: hn-who-is-hiring
+  name: Hacker News "Who is hiring"
+  finds: roles
+  method: api
+  access: free
+  runs: daily
+  rules: The public Algolia HN API; the current month's thread. Discovery follows collection.yml (Tuesday/Friday when intake is full).
+  gives: Founder-posted roles, often remote and contract-friendly. Only UK or remote direct posts are kept.
+  measure:
+    scope_prefix: 'hn:'
+- id: remote-direct
+  name: Remote.com — current careers site
+  finds: roles
+  method: research
+  access: free
+  runs: attended
+  rules: The employer moved from Greenhouse to its own Remote ATS. The obsolete reader is disabled;
+    no supported public API for the replacement has been verified.
+  gives: Current employer openings, checked directly when researching this company.
+  next_step: Review the employer's current engineering openings and qualify remit, engagement and location.
+  links:
+    - {label: Current openings, url: 'https://remote.com/openings'}
+- id: job-search-apis
+  name: More job-search APIs (Jooble, Careerjet)
+  finds: roles
+  method: api
+  access: key-mac
+  runs: not-built
+  rules: Each needs a key requested from the provider.
+  gives: Wider advert coverage beyond Adzuna and Reed.
+  record: CS-36720784d596
+  decisions: [CS-36720784d596]
+- id: upwork
+  name: Upwork job postings
+  finds: contracts
+  method: api
+  access: account
+  runs: not-built
+  rules: >-
+    Upwork's documented GraphQL API (publicMarketplaceJobPostingsSearch) needs an API key requested in
+    Upwork's API Center while signed in to your account, then a one-time OAuth sign-in; the key-only
+    grant is for enterprise accounts. Checked 16 Oct 2026: the old RSS feed returns 410 Gone and the job
+    search page refuses automated readers, so nothing is scraped. Upwork's API terms let an application
+    cache its content for no more than 24 hours, so listings cannot be kept as records the way other
+    sources' adverts are. Proposals and messages stay on Upwork and are yours.
+  gives: Hourly and fixed-price projects with their stated budget basis, read as a moving search window,
+    so a listing missing from one read is not closed.
+- id: contractor-boards
+  name: Contract job boards (Jobserve, CWJobs, Totaljobs, Technojobs)
+  finds: roles
+  method: manual
+  access: free
+  runs: 'off'
+  rules: No reader; saved searches by hand only.
+  gives: The same agency briefs as the aggregators, at source.
+  record: CS-013
+- id: job-alert-email
+  name: Job-alert emails (LinkedIn)
+  finds: roles
+  method: email
+  access: account
+  runs: every 15 minutes
+  rules: VPS receives selected Gmail alerts through a durable Cloudflare buffer. Jobs shows actual run and delivery status; mail receipt is not a vacancy or contact verification.
+  gives: Roles from selective LinkedIn alerts for the six CV role families, saved to the same workspace as manual captures.
+  measure:
+    provider_in: [linkedin_alert]
+- id: jackandjill-email
+  name: Jack and Jill job-alert emails
+  finds: roles
+  method: email
+  access: account
+  runs: every 15 minutes
+  rules: Exact-sender Gmail forwarding to the deployed buffer is enabled; fresh Jack and Jill delivery awaits its first observed new message. Generated summaries are unverified context; use primary advert evidence and the same source-independent limits and ranking.
+  gives: Role digests from the exact registered sender, with canonical UUID identity and original email provenance.
+  measure:
+    provider_in: [jackandjill_alert]
+- id: public-tenders
+  name: Public tenders (Contracts Finder, Find a Tender)
+  finds: contracts
+  method: api
+  access: free
+  runs: daily
+  rules: The official open procurement APIs.
+  gives: Buyers who have published an intention to pay an outside supplier, with budget and deadline.
+  measure:
+    scope_prefix: 'tender:'
+- id: public-frameworks
+  name: Public buying frameworks (G-Cloud, Digital Outcomes)
+  finds: contracts
+  method: account
+  access: account
+  runs: not-built
+  rules: Direct framework sales depend on admission and the framework's terms; joining remains your decision.
+    A separate route is delivery work for a named supplier, subject to its subcontracting requirements.
+  gives: Direct public buying routes where qualified, or potential delivery partners among existing suppliers.
+- id: funding-uktn
+  name: Funding news — UKTN
+  finds: approach
+  method: rss
+  access: free
+  runs: daily
+  rules: UKTN's public RSS feed. A raise of £1m or more, with the amount in the headline, marks the company as funded.
+  gives: UK companies that have just raised money, before any leadership advert exists.
+  measure:
+    provider_in: [uktn]
+- id: funding-techeu
+  name: Funding news — tech.eu
+  finds: approach
+  method: rss
+  access: free
+  runs: 'off'
+  rules: Stopped on 1 Oct (#33). tech.eu's robots.txt disallows its feed for automated readers; its news sitemap is allowed.
+  gives: European raises of €10m or more.
+  measure:
+    provider_in: [techeu]
+  decisions: [workspace:funding-sources]
+- id: hiring-signal
+  name: Companies hiring a leadership or AI role themselves
+  finds: approach
+  method: derived
+  access: free
+  runs: daily
+  rules: Derived from current qualified adverts above; agency adverts, expired or unseen stale adverts,
+    conflicting engagement terms and roles outside software do not establish a current hiring signal.
+  gives: Sourced hiring remits for company qualification and Outreach briefs. Hiring alone does not establish consulting demand.
+- id: companies-house
+  name: Companies House
+  finds: approach
+  method: api
+  access: key-server
+  runs: daily
+  measure:
+    provider_in: [companies-house]
+  rules: The official Companies House API, refreshed every 30 days or when newly relevant to chosen work, within the shared collection policy. You approved it (#29). It reads only
+    companies to approach whose company number was recorded from a page that states it (never matched by
+    name), and records officers' names, official roles and appointment dates, never dates of birth or
+    addresses. Its key is encrypted on the server and readable only by the daily run.
+  gives: Registered details, current officers and share allotments that confirm or reveal a raise, on each company to approach.
+  record: CS-f348fea70b56
+- id: approach-research
+  name: Research on companies to approach
+  finds: approach
+  method: research
+  access: free
+  runs: attended
+  rules: First-party pages and funding articles only; a named CTO or founder with the page it came from,
+    never a guessed email or phone (#31).
+  gives: Sourced context, a bounded problem hypothesis, the decisive unknowns and a named route into each company.
+  decisions: [workspace:approach-contacts, workspace:approach-contacts-hiring]
+- id: warm-network
+  name: People you know (LinkedIn export, your notes)
+  finds: people
+  method: export
+  access: account
+  runs: attended
+  rules: Imported through the review queue; a LinkedIn job title is an observation, not proof of current work.
+  gives: Evidence of close, in-touch, known or connected access. Current sourced prospects can rank above generic historical referrals.
+  record: CS-002
+- id: agency-desks
+  name: Specialist recruitment agencies
+  finds: networks
+  method: research
+  access: relationship
+  runs: attended
+  rules: Attended research records specialist desks and named consultants. Public evidence about a desk
+    is not a relationship or an available mandate; this route adds no scheduled research or outreach.
+  gives: Relevant agency contacts to approach about engineering leadership, AI products and reliable delivery.
+  record: CS-014
+- id: contractor-platforms
+  name: Contractor platforms and curated networks (YunoJuno, Toptal, Malt, Braintrust…)
+  finds: networks
+  method: account
+  access: account
+  runs: 'off'
+  rules: Joining is yours; the assistant prepares profile text for your review.
+  gives: Assignments offered to registered contractors. You have joined YunoJuno and applied to Toptal.
+  decisions: [AG-305, AG-freeman-clarke, AG-go-fractional, AG-303, CO-mercor, AG-contra, AG-fractional-quest]
+- id: awarded-suppliers
+  name: Suppliers winning public digital contracts
+  finds: approach
+  method: api
+  access: free
+  runs: daily
+  measure:
+    scope_prefix: 'award:'
+  rules: Official public award APIs; seven-day update window and at most two pages per provider.
+    Dates refer to the actual award when stated. An updated old notice is not a new win;
+    award value is not available subcontract budget. This is bounded discovery, not complete market coverage.
+  gives: Named suppliers with a published delivery scope, kept as company evidence rather than open tenders or funding.
+  buyer: Delivery director, programme lead or practice lead at the winning supplier.
+  offer: A bounded integration, AI evaluation or release-evidence workstream within an existing delivery programme.
+  next_step: Verify the current delivery phase and a named owner; establish whether external specialists are used before proposing scope.
+  links:
+    - {label: Contracts Finder, url: 'https://www.contractsfinder.service.gov.uk/Search'}
+    - {label: Find a Tender, url: 'https://www.find-tender.service.gov.uk/Search'}
+- id: implementation-partners
+  name: Implementation partners and specialist consultancies
+  finds: approach
+  method: research
+  access: free
+  runs: attended
+  rules: Public partner directories are research starting points; a listing is not evidence of spare budget or demand.
+  gives: Firms already selling implementation work that could use a specialist associate for one delivery gap.
+  buyer: Practice lead, delivery director or founder of a small AI/cloud implementation consultancy.
+  offer: Own evaluation, integration, release evidence and handover for an existing client project.
+  next_step: Shortlist a small set with named client work, identify the delivery owner and ask how they fill specialist capacity gaps.
+  links:
+    - {label: AWS partner directory, url: 'https://partners.amazonaws.com/'}
+    - {label: AI competency partners, url: 'https://aws.amazon.com/ai/generative-ai/competency-partner-highlights/'}
+- id: portfolio-operators
+  name: Portfolio operating teams and acquisition-backed businesses
+  finds: approach
+  method: research
+  access: free
+  runs: attended
+  rules: Investment and acquisition news establish context only. Do not claim the owner has led M&A integration or transaction diligence.
+  gives: A route through an operating partner to a specific portfolio company's delivery or leadership problem.
+  buyer: Technology operating partner, portfolio CTO or a named portfolio-company engineering leader.
+  offer: Establish the delivery-risk baseline, recover an existing system or take bounded interim ownership.
+  next_step: Find one portfolio company with a current engineering change, then qualify its owner and commercial route.
+  links:
+    - {label: ScaleUp Capital portfolio, url: 'https://scaleupcapital.com/company/'}
+    - {label: Hg approach, url: 'https://hgcapital.com/approach'}
+- id: technical-diligence-practices
+  name: Technical diligence and value-creation consultancies
+  finds: networks
+  method: research
+  access: free
+  runs: attended
+  rules: Explore specialist associate work against a named practice. Transaction leadership and certification are not claimed.
+  gives: Paid evidence-gathering or follow-through work within someone else's assessment or improvement engagement.
+  buyer: Engagement lead or engineering practice lead.
+  offer: Assess release, incident, testing, maintainability and ownership evidence; implement an agreed improvement afterwards.
+  next_step: Qualify whether the practice uses associates and which evidence workstream needs hands-on engineering experience.
+  links:
+    - {label: Crosslake practices, url: 'https://crosslaketech.com/practices/'}
+- id: funded-r-and-d
+  name: Funded R&D moving from prototype into production
+  finds: approach
+  method: research
+  access: free
+  runs: attended
+  rules: >-
+    UKRI's public Gateway to Research can identify projects. Automated ingestion is not enabled:
+    active project dates, industry partners and a relevant delivery milestone must be established first.
+  gives: Potential integration, evaluation and handover work at an industry partner on an active funded project.
+  buyer: Industry technical lead or project delivery lead, after checking the project's current phase.
+  offer: Reproducible evaluation, integration with an existing system, and maintainable handover from prototype to delivery.
+  next_step: Find an active software or AI project with an industry partner and a production milestone; verify eligibility to buy external work.
+  links:
+    - {label: Gateway to Research, url: 'https://gtr.ukri.org/'}
+    - {label: Public API documentation, url: 'https://gtr.ukri.org/resources/gtrapi2.html'}
+- id: regulated-ai-delivery
+  name: Regulated AI delivery and assurance partners
+  finds: approach
+  method: research
+  access: free
+  runs: attended
+  rules: Programme participation provides context, not a vacancy or open application window. Offer engineering evidence, not legal advice or certification.
+  gives: Named firms and providers implementing real AI use cases where evaluation and release evidence may be useful.
+  buyer: AI engineering lead, delivery lead or assurance practice owner working on a named system.
+  offer: Executable evaluations, failure cases and monitoring evidence around an existing AI application.
+  next_step: Verify the live use case and technical owner; ask what evidence is missing for the next delivery decision.
+  links:
+    - {label: FCA AI live-testing cohort, url: 'https://www.fca.org.uk/news/press-releases/fca-announces-second-cohort-ai-live-testing'}

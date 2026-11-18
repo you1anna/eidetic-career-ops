@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# The only thing the Mac's off-host key can do (decision #24): name or send an encrypted backup.
+# Installed at /usr/local/bin/wo-offsite-fetch by deploy.sh. The key is authorised in ~ops/.ssh/
+# authorized_keys as  restrict,command="/usr/local/bin/wo-offsite-fetch" …  so SSH_ORIGINAL_COMMAND
+# carries the request; the main key can also run it directly.
+#   wo-offsite-fetch latest          print the newest backup's path
+#   wo-offsite-fetch get <path>      send that backup (encrypted; the private key is only on the Mac)
+set -euo pipefail
+DIR=/srv/offsite/work-ops
+read -r -a argv <<<"${SSH_ORIGINAL_COMMAND:-$*}"
+[[ "${argv[0]:-}" == wo-offsite-fetch ]] && argv=("${argv[@]:1}")
+# Validate and consume the same descriptor: a shell ! -L check followed by cat races a replacement.
+# Anchor each directory component as well as the archive, so parent symlinks cannot redirect reads.
+exec /usr/bin/python3 -I - "$DIR" "${argv[@]}" <<'PY'
+import os
+from pathlib import PurePosixPath
+import re
+import shutil
+import stat
+import sys
+
+directory, *args = sys.argv[1:]
+pattern = re.compile(r"work-ops-[0-9]{8}T[0-9]{6}Z\.db\.age")
+def regular(info):
+    return stat.S_ISREG(info.st_mode) and info.st_nlink == 1
+
+def open_store(path):
+    fd = os.open("/", os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        for part in PurePosixPath(path).parts[1:]:
+            child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
+            os.close(fd)
+            fd = child
+        return fd
+    except BaseException:
+        os.close(fd)
+        raise
+
+try:
+    if args != ["latest"] and not (len(args) == 2 and args[0] == "get"):
+        raise ValueError("usage: wo-offsite-fetch latest | get <path>")
+    store = open_store(directory)
+    try:
+        if args == ["latest"]:
+            candidates = []
+            for name in os.listdir(store):
+                if not pattern.fullmatch(name):
+                    continue
+                try:
+                    info = os.stat(name, dir_fd=store, follow_symlinks=False)
+                except FileNotFoundError:  # retention can remove a file while listing
+                    continue
+                if regular(info):
+                    candidates.append((info.st_mtime_ns, name))
+            if not candidates:
+                raise ValueError("no encrypted backup available")
+            print(directory + "/" + max(candidates)[1])
+        else:
+            name = args[1].removeprefix(directory + "/")
+            if args[1] != directory + "/" + name or not pattern.fullmatch(name):
+                raise ValueError("not an encrypted backup path")
+            fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=store)
+            with os.fdopen(fd, "rb") as source:
+                if not regular(os.fstat(source.fileno())):
+                    raise ValueError("not a regular, single-link archive")
+                shutil.copyfileobj(source, sys.stdout.buffer, length=1024 * 1024)
+    finally:
+        os.close(store)
+except (OSError, ValueError) as error:
+    print(f"refused: {error}", file=sys.stderr)
+    sys.exit(2)
+PY

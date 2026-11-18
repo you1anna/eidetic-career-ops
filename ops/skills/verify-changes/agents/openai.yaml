@@ -1,0 +1,6 @@
+interface:
+  display_name: "Verify Changes"
+  short_description: "Choose focused checks and retain useful failure evidence"
+  default_prompt: "Use $verify-changes to test this change and report the evidence and remaining gaps."
+policy:
+  allow_implicit_invocation: true

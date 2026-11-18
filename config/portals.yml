@@ -1,0 +1,420 @@
+# Scanner configuration and attended search references for work-ops.
+# enabled switches control adapter input; scheduling is in ops/vps/, source descriptions in channels.yml.
+# Rewired 2026-09-14 per decisions/2026-09-14-expansion-answers.md: engineering leadership titles
+# co-primary with QE; contract/interim engagement filter; Jobserve and remote boards added; tracked
+# boards grown for the daily ATS scan (work-ops/tools/scan_boards.py reads this same file).
+# Accidental run 2026-09-03 with the upstream list added 869 offers; reverted. Keep this list the owner-relevant.
+
+title_filter:
+  positive:
+    # Engineering leadership (co-primary since 2026-09-14; Director CV)
+    - "Head of Engineering"
+    - "Head of AI"
+    - "Director of Engineering"
+    # Variants verified in original alert cards on 2026-10-07; candidates still need qualification.
+    - "Director of Software Engineering"
+    - "Director of Product Engineering"
+    - "Engineering Director"
+    - "Head of Production Engineering"
+    - "VP Engineering"
+    - "VP of Engineering"
+    - "Vice President of Engineering"
+    - "Vice President Engineering"
+    - "SVP, Engineering"
+    - "Engineering Manager"
+    - "Engineering Lead"
+    - "Engineering Leader"
+    - "Technical Lead"
+    - "Lead Engineer"
+    - "Head of Platform"
+    - "Head of Delivery"
+    - "Head of Technology"
+    - "Interim"
+    - "Fractional"
+    - "CTO"
+    - "Chief Technology Officer"
+    # Quality leadership (primary; QE CV)
+    - "Quality Engineering"
+    - "Quality Engineer"
+    - "Head of Quality"
+    - "Director of Quality"
+    - "Head of QA"
+    - "QA Lead"
+    - "Lead QA"
+    - "QA Manager"
+    - "Test Manager"
+    - "Programme Test"
+    - "Head of Test"
+    - "Head of Testing"
+    - "Test Lead"
+    # Architect-level test roles (found 2026-09-28: the iO Associates "Test Architect - Non Functional
+    # & Performance" contract matched nothing above)
+    - "Test Architect"
+    - "QA Architect"
+    - "Quality Architect"
+    - "SDET"
+    - "Software Development Engineer in Test"
+    - "QA Automation Engineer"
+    # AI evaluation / reliability / forward deployed (primary at bounded allocation)
+    - "Evaluation"
+    - "Evals"
+    - "AI Reliability"
+    - "AI Quality"
+    # Narrow testing variants recovered from original alert cards on 2026-10-17.
+    - "AI Test Engineer"
+    - "AI Assurance"
+    - "Forward Deployed"
+    - "Applied AI Engineer"
+    - "Applied AI Lead"
+    - "Applied AI & ML Lead"
+    - "AI Engineer"
+    # Systems integration / productivity / senior IC (adjacent)
+    - "Founding Engineer"
+    - "Founding Software Engineer"
+    - "Principal Engineer"
+    - "Staff Engineer"
+    - "Staff Software Engineer"
+    - "Platform Engineer"
+    - "Product Engineer"
+    - "Solutions Engineer"
+    - "Solutions Architect"
+    - "Integration Engineer"
+    - "Implementation Engineer"
+    - "Deployment Engineer"
+    - "Developer Productivity"
+    - "Developer Experience"
+    - "Engineering Productivity"
+  negative:
+    # Non-engineering roles that share words with the positive list (first live run 2026-09-14)
+    - "Account Executive"
+    - "Sales"
+    - "Marketing"
+    - "Legal"
+    - "Recruiter"
+    - "Sourcer"
+    - "Instructor"
+    - "Manufacturing"
+    - "Pricing"
+    - "Partnership"
+    - "GTM"
+    - "Customer Success"
+    - "Finance"
+    - "People"
+    - "Junior"
+    - "Graduate"
+    - "Intern"
+    - "Internship"
+    - "New Grad"
+    - "New Graduate"
+    - "Early Career"
+    - "Interns"
+    - "Apprentice"
+    - "Manual"
+    - "Games Tester"
+    - "Clearance"
+    - "SC Cleared"
+    - "DV Cleared"
+    - "Security Cleared"
+    - "Mechanical"
+    - "Electrical"
+    - "Civil"
+    - "Hardware"
+  seniority_boost:  # attended search guidance; no scanner or relevance reader uses this list
+    - "Head"
+    - "Lead"
+    - "Principal"
+    - "Director"
+    - "Interim"
+    - "VP"
+
+# Shared job rules tag each candidate: contract | interim | ftc | permanent | unknown. Fractional
+# wording normalises to interim. Contract-first: contract/interim/ftc rows sort first; permanent
+# rows are kept (suitable permanent work remains eligible) but shown separately.
+engagement_filter:
+  # Strong markers count as whole words in title / location / employment type.
+  strong_markers: ["contract", "contractor", "interim", "fractional", "freelance", "fixed-term", "fixed term", "ftc", "temporary"]
+  # Text markers must be specific phrases; bare "contract" and "b2b" tagged marketing roles on the first run.
+  text_markers: ["day rate", "per day", "/day", "outside ir35", "inside ir35", "ir35", "umbrella company", "month contract", "months contract", "month initial contract", "contract role", "contract position", "fixed-term contract", "fixed term contract", "initial term of", "rolling contract"]
+  minimum_day_rate_gbp: 450      # floor, not the ask; unstated rates are kept and flagged
+  prefer: ["contract", "interim", "fractional", "ftc"]
+
+location_filter:
+  # London-based, London travel, no relocation, no regular travel abroad. Remote foreign work is
+  # considered when the actual working hours sit within ±6h of UK.
+  # Short tokens (<=3 chars) match as whole words; "et" no longer matches "Detroit".
+  accept_any_of: ["london", "remote", "united kingdom", "uk", "england", "scotland", "wales", "emea", "europe", "hybrid", "work from home", "wfh", "ireland", "dublin", "netherlands", "amsterdam", "germany", "berlin", "munich", "sweden", "stockholm", "denmark", "copenhagen", "norway", "oslo", "finland", "helsinki", "switzerland", "zurich", "belgium", "brussels", "france", "paris", "spain", "madrid", "barcelona", "portugal", "lisbon", "italy", "poland", "warsaw", "dubai", "uae", "abu dhabi", "new york", "boston", "toronto", "montreal", "us east", "us-east", "eastern time", "eastern"]
+  # Rejects are checked first, then named US regions/cities (scanner built-in, incl. multi-city US listings and
+  # "United States (Remote)"), then this accept list. Location labels never establish UK eligibility alone.
+  reject_any_of: ["on-site only", "onsite only", "relocation required", "must be based in the us", "us only", "usa only", "australia", "sydney", "melbourne", "singapore", "tokyo", "japan", "india", "bangalore", "bengaluru", "pune", "hyderabad", "taiwan", "korea", "seoul", "china", "brazil", "serbia", "saudi", "riyadh", "mexico", "argentina", "colombia", "latam"]
+
+search_queries:
+  # Attended discovery references only: no automated adapter reads these queries or enabled flags.
+  # UK contract boards (discovery only; qualify on the primary recruiter/employer advert)
+  - name: Jobserve — contract test manager / QA leadership
+    query: 'site:jobserve.com contract "Test Manager" OR "Head of QA" OR "QA Lead" OR "Head of Quality" London'
+    enabled: true
+  - name: Jobserve — interim engineering leadership
+    query: 'site:jobserve.com contract "Head of Engineering" OR "Engineering Manager" OR "Interim" London'
+    enabled: true
+  - name: CWJobs — contract test manager
+    query: 'site:cwjobs.co.uk contract "Test Manager" OR "QA Lead" OR "Head of QA" London'
+    enabled: true
+  - name: TotalJobs — contract test manager
+    query: 'site:totaljobs.com contract "Test Manager" OR "Head of Quality" London'
+    enabled: true
+  - name: Contractor UK — QA and engineering leadership
+    query: 'site:contractoruk.com "Test Manager" OR "QA Lead" OR "Head of Engineering" contract'
+    enabled: true
+  - name: Technojobs / Reed — contract engineering leadership
+    query: 'site:technojobs.co.uk OR site:reed.co.uk contract "Head of Engineering" OR "Engineering Manager" OR "Test Manager" London'
+    enabled: true
+  - name: LinkedIn — interim head of QE / engineering (discovery only, no LinkedIn applications)
+    query: 'site:linkedin.com/jobs "Head of Quality Engineering" OR "Interim Head of QA" OR "Interim Head of Engineering" contract London'
+    enabled: true
+  - name: AI evaluation contracts UK
+    query: '"AI evaluation" OR "LLM evaluation" OR "evals" contract "day rate" OR "outside IR35" UK'
+    enabled: true
+  - name: Systems delivery — UK and Ireland contracts
+    query: '"contract" "integration engineer" "UK" OR "Ireland"'
+    enabled: true
+  - name: Engineering productivity — Europe contract or interim
+    query: '"engineering productivity" "contract" OR "interim" "Europe"'
+    enabled: true
+  - name: Operational integration — named delivery partners
+    query: '"implementation partner" "workflow" "client" "2026"'
+    enabled: true
+  # Overseas remote (remote-only; no regular travel abroad)
+  - name: Ireland remote-only contracts
+    query: 'site:irishjobs.ie OR site:brightwater.ie OR site:sigmarrecruitment.com contract "fully remote" "Test Manager" OR "QA Lead" OR "Engineering Manager"'
+    enabled: true
+  - name: Nordics remote assignments (Ework)
+    query: 'site:eworkgroup.com remote "test manager" OR "engineering manager" OR "quality" assignment'
+    enabled: true
+  - name: Netherlands remote assignments
+    query: 'site:striive.com OR site:headfirst.nl remote English "test manager" OR "engineering manager" OR "QA lead"'
+    enabled: true
+  - name: HN Who is hiring — current month
+    # Select the current month's thread; scan_hn.py finds that thread dynamically.
+    query: 'site:news.ycombinator.com "Who is hiring" contract remote UK OR Europe'
+    enabled: true
+  - name: Remote boards — contract engineering leadership
+    query: 'site:weworkremotely.com OR site:remoteok.com OR site:remotive.com OR site:himalayas.app contract "engineering manager" OR "head of engineering" OR "QA lead" Europe OR UK'
+    enabled: true
+
+# Tracked ATS boards. The daily scanner infers the provider and slug from careers_url:
+#   jobs.lever.co/<slug> · jobs.ashbyhq.com/<slug> · job-boards.greenhouse.io/<slug> · boards.greenhouse.io/<slug>
+# First live run 2026-09-14: 39 boards read (2,453 jobs), 40 slugs returned 404 and are disabled below
+# with a note; a 404 means the slug is wrong, not that the company has no jobs. Re-enable with the real slug.
+tracked_companies:
+  - {name: Hyperlayer, careers_url: https://ats.rippling.com/hyperlayer/jobs, enabled: true, slug_verified: true}
+  - name: Anthropic
+    careers_url: https://job-boards.greenhouse.io/anthropic
+    api: https://boards-api.greenhouse.io/v1/boards/anthropic/jobs
+    enabled: true
+  - name: Palantir
+    careers_url: https://jobs.lever.co/palantir
+    enabled: true
+  - {name: Monzo, careers_url: https://job-boards.greenhouse.io/monzo, enabled: true, slug_verified: true}
+  - {name: GoCardless, careers_url: https://job-boards.greenhouse.io/gocardless, enabled: true, slug_verified: true}
+  - {name: Octopus Energy, careers_url: https://jobs.lever.co/octoenergy, enabled: true, slug_verified: true}
+  - {name: Deliveroo, careers_url: https://jobs.ashbyhq.com/deliveroo, enabled: true, slug_verified: true}
+  - {name: Faculty, careers_url: https://jobs.ashbyhq.com/faculty, enabled: true, slug_verified: true}
+  - {name: Plum, careers_url: https://apply.workable.com/withplum/, enabled: false, slug_verified: true}
+  - {name: Gousto, careers_url: https://jobs.smartrecruiters.com/Gousto, enabled: true, slug_verified: true}
+  - {name: Excludo, careers_url: https://job-boards.greenhouse.io/excludo, enabled: false, slug_verified: true} # the owner explicitly excluded Excludo on 6 October 2026.
+
+job_boards: []   # superseded by `feeds:` below, which is actually read by the scanner
+
+# ---------------------------------------------------------------------------------------------
+# Query feeds — the channel the tracked boards above structurally cannot cover.
+#
+# A tracked board is one employer's own vacancies, and a UK employer's own headcount is
+# overwhelmingly permanent: the 14–16 September runs read ~10,000 jobs across 61 boards and returned
+# 176 candidates, of which 0 were contract and 0 carried a day rate. UK contract work is brokered,
+# and reaches the market through aggregators and agency desks. These feeds query the whole market by
+# role and engagement instead of by company, so the company name arrives in the payload.
+#
+# Credentials are read from the environment and are never stored here or in the repository.
+# Local per-run caps are below; account-wide remaining quota is not known.
+#
+# Both search schema probes passed on 24 September 2026. Daily keyed reads were approved on
+# 1 October (#39); the deployed wrapper selects those approved sources explicitly. See channels.yml
+# for source status and archive/docs/provider-validation-2026-09-24.md for the original probe evidence.
+#   ADZUNA_APP_ID=... ADZUNA_APP_KEY=... python3 tools/scan_boards.py --probe adzuna
+#   REED_API_KEY=...                     python3 tools/scan_boards.py --probe reed
+# The probe prints a field-by-field verdict. A mismatch names the fields that moved.
+# Keys: developer.adzuna.com (Trial Access) · reed.co.uk/developers.
+# One exact-phrase search per role; overlapping results are deduplicated after retrieval.
+# Adzuna's what_or matches single words ("head", "of"), which returned nearly every London advert and
+# truncated the relevant ones, so phrases replace it. Contract and permanent are both read; the
+# engagement tag from each advert keeps contract work first in the ranking (24 Sep 2026).
+# Collection ceilings, pacing, detail budgets and observed account limits live in collection.yml.
+role_phrases: &role_phrases
+  # 30 October: five leadership, four AI, three delivery/integration/productivity,
+  # three quality leadership searches. Interleaved under the unchanged provider caps.
+  - head of engineering
+  - AI engineer
+  - integration engineer
+  - engineering manager
+  - head of AI
+  - developer productivity
+  - director of engineering
+  - forward deployed engineer
+  - head of delivery
+  - VP engineering
+  - AI evaluation
+  - interim CTO
+  - head of quality
+  - QA lead
+  - test manager
+
+feeds:
+  - name: Adzuna UK — remote, whole country
+    provider: adzuna
+    enabled: true
+    params:
+      country: gb
+      what: "remote"
+      phrases: [head of engineering, AI engineer, integration engineer, engineering manager, head of AI, developer productivity]
+      max_days_old: 14
+      sort_by: date
+      results_per_page: 50
+      max_pages: 1
+      app_id_env: ADZUNA_APP_ID
+      app_key_env: ADZUNA_APP_KEY
+
+  - name: Adzuna UK — London QA and engineering leadership
+    provider: adzuna
+    enabled: true
+    params:
+      country: gb
+      phrases: *role_phrases
+      what_exclude: "graduate junior apprentice"
+      where: "London"
+      distance: 40
+      max_days_old: 14
+      sort_by: date
+      results_per_page: 50
+      max_pages: 1
+      app_id_env: ADZUNA_APP_ID
+      app_key_env: ADZUNA_APP_KEY
+
+  - name: Reed UK — London QA and engineering leadership
+    provider: reed
+    enabled: true
+    params:
+      phrases: *role_phrases
+      where: "London"
+      distance_miles: 40
+      results_per_page: 100
+      max_pages: 1
+      api_key_env: REED_API_KEY
+
+# ---------------------------------------------------------------------------------------------
+# Published contract demand — the direct, outside-IR35 market, read by tools/scan_tenders.py.
+#
+# `rates.md` names three markets and `decisions/2026-09-03-contract-first-september.md` names
+# running only the easiest of them as the failure mode. Agency day-rate work is what the feeds
+# above find. This section covers the second: buyers who have published an intention to pay an
+# outside supplier. Unlike a job advert, a notice states a buyer, a budget and a deadline.
+#
+# Neither service needs an API key or an account, so there is no credential to obtain and no cost.
+# Confirm the schema before enabling, as with the feeds:
+#   python3 tools/scan_tenders.py --probe all
+#
+# A notice is a buying signal, not a qualified opportunity: it does not show that the owner can win it,
+# that the timetable is open, or that a direct supply route exists. wo ingest can import matching
+# candidates as records; that does not qualify a buying route or contact anyone.
+tenders:
+  filter:
+    # CPV is the EU/UK procurement classification. 722x software, 725x/726x computer services,
+    # 7940x business and management consultancy.
+    cpv_prefixes: ["722", "725", "726", "7940", "73110"]
+    # Single words match as words; phrases match as substrings.
+    keywords:
+      - "test"
+      - "testing"
+      - "quality assurance"
+      - "test management"
+      - "software assurance"
+      - "technical assurance"
+      - "delivery partner"
+      - "digital delivery"
+      - "engineering capability"
+      - "platform modernisation"
+      - "legacy migration"
+      - "service reliability"
+      - "AI assurance"
+      - "model evaluation"
+      - "evaluation framework"
+    negative: ["cleaning", "catering", "construction", "groundworks", "vehicle", "furniture",
+               "stationery", "security guarding", "waste", "highways"]
+    # Below this the work is too small to be worth a supplier route. An unstated value is an
+    # unknown and is kept, not rejected.
+    minimum_value_gbp: 50000
+  sources:
+    - name: Contracts Finder
+      source: contracts_finder
+      enabled: true
+      params: {stages: tender, page_size: 100, max_pages: 10}
+    - name: Find a Tender
+      source: find_a_tender
+      enabled: true
+      params: {stages: tender, page_size: 100, max_pages: 10}
+
+# Awarded suppliers are potential delivery partners, not open tender opportunities. Free official
+# APIs; existing daily ingest; no new account/timer. Updated notices are bounded to seven days,
+# two pages per provider. Actual award dates remain separate from notice update dates.
+# Uses tenders.filter; missing value is unknown, and award value is never subcontract budget.
+commercial_awards:
+  sources:
+    - name: Contracts Finder awards
+      source: contracts_finder
+      enabled: true
+      params: {page_size: 100, max_pages: 2}
+    - name: Find a Tender awards
+      source: find_a_tender
+      enabled: true
+      params: {page_size: 100, max_pages: 2}
+
+hn_who_is_hiring:
+  enabled: true
+  max_pages: 10
+
+# ---------------------------------------------------------------------------------------------
+# Selected Gmail alerts reach the private Cloudflare buffer, then the VPS spool.
+# The dedicated wo-email.timer runs the parser/importer; receipt does not prove vacancy freshness.
+alerts:
+  enabled: true
+  transport: spool
+  spool_path: /srv/work-ops/data/email/mail.db
+  max_messages: 200
+  # Exact sender identities are owned by config/email-sources.json, shared with the buffer.
+
+# Funding news, read by tools/scan_news.py (25 Sep 2026). A company that has just raised money
+# is a trigger for a direct approach about interim or fractional engineering and quality leadership,
+# before any advert exists. Public RSS, no key. Presence-only; a story is kept only when its headline
+# states a company raise with an amount at or above the feed's floor (in millions of the stated
+# currency; no conversion). Fund raises are dropped. See archive/docs/source-research-2026-09-25.md.
+signals:
+  funding_news:
+    - id: uktn
+      name: UKTN funding news
+      url: https://www.uktech.news/funding/feed
+      region: UK
+      min_amount_millions: 1
+      enabled: true
+    - id: techeu
+      name: tech.eu news
+      url: https://tech.eu/feed/
+      region: Europe
+      min_amount_millions: 10
+      enabled: false  # 1 Oct (#33): its robots.txt disallows /feed/ for automated readers
+  # A raise that is not a growth signal: debt, or a story about cutting jobs.
+  exclude_terms: [" in debt", "debt financing", "debt facility", "headcount cut", "layoff", "job cuts", "redundanc"]
+  # Leading words that describe a company rather than name it ("Fintech Foo raises …").
+  descriptors: [fintech, insurtech, proptech, healthtech, medtech, edtech, legaltech, regtech, cleantech,
+                climatetech, deeptech, traveltech, agritech, foodtech, martech, adtech, govtech, cybersecurity,
+                startup, scaleup, unicorn, british, uk, london, scottish, welsh, irish, english, european,
+                french, german, dutch, swedish, danish, norwegian, finnish, spanish, italian, polish, swiss,
+                estonian, belgian, austrian, portuguese, lithuanian, latvian, czech, greek, ai, saas, b2b]

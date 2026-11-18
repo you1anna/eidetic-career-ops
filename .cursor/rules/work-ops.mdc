@@ -1,0 +1,15 @@
+---
+description: Work-ops entry points and working boundaries
+alwaysApply: true
+---
+
+# Work-ops
+
+Start at `plans/README.md` for the current queue, then `AGENTS.md`. Standing rules are in `CLAUDE.md`. Archive plans and command-center are historical.
+
+- Live records only through `ops/wo-live`. Local checks use `.venv/bin/python tools/wo.py` and `tools/make_fixture.py`.
+- Run `ops/check.sh` outside the agent command sandbox. WebKit aborts if a browser is launched there, so the runner refuses the launch.
+- Before changing code, read the matching section of `docs/architecture.md`. Keep one mutation service, one normaliser, and one template pack.
+- UK English. Prefer API setup in tests over hand-built database rows.
+- A push is not a deploy. Do not send messages, spend, or change schedules unless this chat explicitly asks.
+- Outreach notes use `workspace/js/message-format.js`. Extend that reader; do not add a second one.

@@ -1,0 +1,28 @@
+[Unit]
+Description=work-ops deterministic site caretaker
+After=network-online.target
+ConditionPathExists=/srv/work-ops/data/work-ops.db
+
+[Service]
+Type=oneshot
+User=workops
+Group=workops
+UMask=0077
+Environment=TZ=Europe/London
+WorkingDirectory=/srv/work-ops/work-ops
+ExecStart=/srv/work-ops/venv/bin/python tools/caretaker.py --db /srv/work-ops/data/work-ops.db --data /srv/work-ops/data --record
+TimeoutStartSec=60
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+ReadWritePaths=/srv/work-ops/data
+InaccessiblePaths=/srv/work-ops/.ssh
+MemoryMax=256M

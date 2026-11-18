@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Dedicated read-only diagnostics capability; never falls back to the administrator key.
+exec python3 "$(dirname -- "${BASH_SOURCE[0]}")/local/diagnostics.py" "$@"

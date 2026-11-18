@@ -1,0 +1,13 @@
+[Unit]
+Description=Private socket for the work-ops Codex research account
+
+[Socket]
+ListenStream=/run/wo-research-codex.sock
+SocketUser=codex
+SocketGroup=workops
+SocketMode=0660
+Accept=yes
+MaxConnections=1
+
+[Install]
+WantedBy=sockets.target

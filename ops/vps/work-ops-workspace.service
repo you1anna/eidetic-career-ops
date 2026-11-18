@@ -1,0 +1,35 @@
+[Unit]
+Description=work-ops career workspace (loopback only; published via Cloudflare Tunnel + Access)
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/srv/work-ops/data/work-ops.db
+
+[Service]
+User=workops
+Group=workops
+Environment=TMPDIR=/srv/work-ops/run
+Environment=TZ=Europe/London
+Environment=WO_REVISION=@REVISION@
+Environment=WO_DB=/srv/work-ops/data/work-ops.db
+# Two malloc arenas, not 8 per core: freed state memory is reused instead of growing each rebuild.
+Environment=MALLOC_ARENA_MAX=2
+WorkingDirectory=/srv/work-ops/work-ops/workspace
+ExecStart=/srv/work-ops/venv/bin/python /srv/work-ops/work-ops/workspace/server.py --db /srv/work-ops/data/work-ops.db --port 8769 --public-origin @PUBLIC_ORIGIN@
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ReadWritePaths=/srv/work-ops/data /srv/work-ops/run
+# The web server runs as the same user as the daily run, so it is kept away from that run's keys.
+InaccessiblePaths=/srv/work-ops/.ssh -/run/credentials -/etc/credstore -/etc/credstore.encrypted
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+LockPersonality=yes
+# The cached state is about 80 MB of live objects and grows with the data; 256M was hit three times on 20-21 Oct.
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

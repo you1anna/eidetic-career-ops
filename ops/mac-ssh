@@ -1,0 +1,251 @@
+#!/usr/bin/env bash
+# SSH between the Macs, the VPS and the iPhone over the owner's tailnet, keys only like the VPS.
+# Run the same command on the Air and the Mac mini; see ops/OPERATIONS.md, "Mac SSH" and "Tailscale".
+#
+#   ops/mac-ssh          report this Mac's SSH, tailnet and remote-session state (changes nothing)
+#   ops/mac-ssh setup    authorise the other Mac's and the iPhone's keys, record the VPS's tailnet host key,
+#                        install ~/.ssh/work-ops.conf (ssh air|mini|work-ops-vps|codex-vps) and tmux, and
+#                        run `remote`, then install the keys-only sshd drop-in (sudo, last)
+#   ops/mac-ssh keys     only (re)authorise those keys, limited to tailnet/LAN/loopback sources
+#   ops/mac-ssh remote   keep a Claude remote-control server running in ~/Projects (LaunchAgent
+#                        com.macmini.claude-remote) that holds the Mac awake only on mains power, and
+#                        let Codex keep the Mac awake for remote control while plugged in
+set -euo pipefail
+[[ "$(uname)" == Darwin ]] || { echo "ops/mac-ssh is for the Macs; the VPS uses ops/vps/harden.sh ssh" >&2; exit 2; }
+cd "$(dirname "$0")/.."
+
+DROPIN=/etc/ssh/sshd_config.d/010-keys-only.conf
+AUTH="$HOME/.ssh/authorized_keys"
+OWN_PUB="$HOME/.ssh/work_ops_vps.pub"
+VPS_HOSTKEY=SHA256:examplefingerprintreplacewithyourownkeyAAAAA
+VPS_TAILNET=100.64.0.10
+TS=/Applications/Tailscale.app/Contents/MacOS/Tailscale
+SSH_CONF="$HOME/.ssh/work-ops.conf"
+INCLUDE_LINE="Include ~/.ssh/work-ops.conf"
+REMOTE_LABEL=com.macmini.claude-remote
+REMOTE_PLIST="$HOME/Library/LaunchAgents/$REMOTE_LABEL.plist"
+CODEX_CONF="$HOME/.codex/config.toml"
+# Where those keys may log in from: the tailnet (100.64.0.0/10, and its IPv6 under fd00::/8), the home LAN,
+# link-local and loopback. sshd listens on every interface (macOS ignores ListenAddress for its launchd
+# socket) and the Macs have global IPv6 addresses, so this key option is what keeps SSH off the internet.
+FROM='from="100.64.0.0/10,192.168.1.0/24,fe80::/10,fd00::/8,127.0.0.1,::1"'
+# Keys allowed to log in to either Mac, as fingerprint then line: each Mac's ~/.ssh/work_ops_vps (the
+# same key it uses for the VPS), then the iPhone's Termius SSH ID key (the one seen in a login).
+MAC_KEYS=(
+  "SHA256:examplefingerprintreplacewithyourownkeyAAAAA $FROM ssh-ed25519 AAAAexamplePublicKeyReplaceWithYourOwn owner@macbookair upcloud-vps ops"
+  "SHA256:examplefingerprintreplacewithyourownkeyAAAAA $FROM ssh-ed25519 AAAAexamplePublicKeyReplaceWithYourOwn work-ops-macmini"
+  "SHA256:examplefingerprintreplacewithyourownkeyAAAAA $FROM ecdsa-sha2-nistp256 AAAAexamplePublicKeyReplaceWithYourOwn #SSH ID - @example"
+)
+# Tailnet addresses stay fixed for a device's registration, so they survive a rename in the admin console.
+CONF_TEXT='# Managed by work-ops ops/mac-ssh setup; change it there. Everything here goes over the tailnet.
+Host air
+  HostName 100.64.0.21
+  User macbookair
+  HostKeyAlias air
+Host mini
+  HostName 100.64.0.22
+  User macmini
+  HostKeyAlias mini
+Host air mini
+  IdentityFile ~/.ssh/work_ops_vps
+  IdentitiesOnly yes
+  StrictHostKeyChecking accept-new
+  ServerAliveInterval 30
+# The VPS answers SSH on the tailnet only; the old public address is sent there too.
+Host work-ops-vps 100.64.0.10 203.0.113.10
+  HostName 100.64.0.10
+  User ops
+  IdentityFile ~/.ssh/work_ops_vps
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  # One shared connection for 10 minutes: later commands skip the handshake (11.6 s -> 2.2 s per wo call).
+  ControlMaster auto
+  ControlPath ~/.ssh/cm-%C
+  ControlPersist 10m
+Host codex-vps
+  HostName 100.64.0.10
+  User codex
+  IdentityFile ~/.ssh/work_ops_vps
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 3'
+DROPIN_TEXT='# Keys only, matching the VPS. Installed by work-ops ops/mac-ssh setup; see ops/OPERATIONS.md, "Mac SSH".
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitRootLogin no
+AllowAgentForwarding no
+X11Forwarding no'
+
+fp() { ssh-keygen -lf "$1" 2>/dev/null | awk '{print $2}'; }
+remote_login() { launchctl print system/com.openssh.sshd >/dev/null 2>&1; }
+# The methods this Mac's sshd offers, read from a refused login to itself (no password is sent).
+offered() {
+  ssh -F /dev/null -o BatchMode=yes -o PubkeyAuthentication=no -o ControlPath=none \
+    -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=ERROR \
+    -o ConnectTimeout=5 localhost true 2>&1 | sed -n 's/.*Permission denied (\(.*\)).*/\1/p'
+}
+
+report() {
+  local own=""; [[ -r "$OWN_PUB" ]] && own=$(fp "$OWN_PUB")
+  echo "Host: $(scutil --get LocalHostName)"
+  if remote_login; then echo "Remote Login: on; sshd offers: $(offered || true)"; else echo "Remote Login: off"; fi
+  [[ -f "$DROPIN" ]] && echo "Keys-only drop-in: installed" || echo "Keys-only drop-in: missing (ops/mac-ssh setup)"
+  echo "Authorised to log in here:"
+  if [[ -s "$AUTH" ]]; then ssh-keygen -lf "$AUTH" | awk '{print "  " $2, $3, $4, $5, $6}'; else echo "  (none)"; fi
+  if [[ -n "$own" ]]; then
+    local lock='check failed' key_status=0
+    ops/vps-unlock --check || key_status=$?
+    case "$key_status" in
+      0) lock=ready ;;
+      2) lock='key missing' ;;
+      3) lock='unlock needed' ;;
+      4) lock='check inconclusive (agent/session or SSH access)' ;;
+    esac
+    local pp="passphrase set"; ssh-keygen -y -P '' -f "${OWN_PUB%.pub}" >/dev/null 2>&1 && pp="NO passphrase"
+    echo "This Mac's key: $own ($pp; $lock)"
+  else
+    echo "This Mac's key: none at ~/.ssh/work_ops_vps"
+  fi
+  if ssh-keygen -lF "$VPS_TAILNET" 2>/dev/null | grep -qF "$VPS_HOSTKEY"; then echo "VPS tailnet host key: known, matches"
+  else echo "VPS tailnet host key: not recorded (ops/mac-ssh setup)"; fi
+  if [[ -x "$TS" ]]; then
+    echo "Tailnet:"; "$TS" status 2>&1 | awk '{print "  " $2, $1, (/offline/ ? "offline" : "online")}'
+  else echo "Tailscale: not installed"; fi
+  if [[ -f "$SSH_CONF" ]] && cmp -s "$SSH_CONF" <(printf '%s\n' "$CONF_TEXT") && grep -qxF "$INCLUDE_LINE" "$HOME/.ssh/config" 2>/dev/null
+  then echo "SSH shortcuts: ssh air | mini | work-ops-vps | codex-vps"
+  else echo "SSH shortcuts: missing or out of date (ops/mac-ssh setup)"; fi
+  command -v tmux >/dev/null && echo "tmux: installed" || echo "tmux: missing (ops/mac-ssh setup)"
+  echo "Sleep on mains power: $(pmset -g custom | awk '/^AC Power/{f=1} f && $1 == "sleep" {print $2 " min (0 = never)"; exit}')"
+  local codex; codex=$(sed -n 's/^keepRemoteControlAwakeWhilePluggedIn = //p' "$CODEX_CONF" 2>/dev/null)
+  echo "Codex keeps this Mac awake for remote control while plugged in: ${codex:-not set}"
+  local rc; rc=$(launchctl print "gui/$(id -u)/$REMOTE_LABEL" 2>/dev/null | awk '$1 == "state" {print $3; exit}')
+  echo "Claude remote-control server ($REMOTE_LABEL): ${rc:-not installed (ops/mac-ssh remote)}"
+}
+
+install_remote() {
+  local claude="$HOME/.local/bin/claude" tmp
+  [[ -x "$claude" ]] || claude=$(command -v claude) || { echo "claude is not installed" >&2; exit 1; }
+  mkdir -p "$HOME/Library/Logs" "$HOME/Library/LaunchAgents"
+  tmp=$(mktemp)
+  # caffeinate -s holds off system sleep on mains power only; on battery the Mac sleeps as usual.
+  # The server redraws its status line on stdout, so only errors are logged.
+  cat > "$tmp" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key><string>$REMOTE_LABEL</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/caffeinate</string><string>-s</string>
+		<string>$claude</string><string>remote-control</string>
+	</array>
+	<key>WorkingDirectory</key><string>$HOME/Projects</string>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key><string>$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+		<key>LANG</key><string>en_GB.UTF-8</string>
+	</dict>
+	<key>RunAtLoad</key><true/>
+	<key>KeepAlive</key><dict><key>SuccessfulExit</key><false/></dict>
+	<key>ThrottleInterval</key><integer>60</integer>
+	<key>StandardOutPath</key><string>/dev/null</string>
+	<key>StandardErrorPath</key><string>$HOME/Library/Logs/claude-remote.log</string>
+</dict>
+</plist>
+PLIST
+  plutil -lint -s "$tmp" || { rm -f "$tmp"; exit 1; }
+  install -m 644 "$tmp" "$REMOTE_PLIST"; rm -f "$tmp"
+  launchctl bootout "gui/$(id -u)/$REMOTE_LABEL" 2>/dev/null || true
+  # bootout returns before the job is gone; bootstrapping too soon fails with "5: Input/output error".
+  for _ in {1..20}; do launchctl print "gui/$(id -u)/$REMOTE_LABEL" >/dev/null 2>&1 || break; sleep 0.5; done
+  launchctl bootstrap "gui/$(id -u)" "$REMOTE_PLIST"
+  echo "remote control: $REMOTE_LABEL loaded; new sessions start in ~/Projects"
+  if [[ -f "$CODEX_CONF" ]]; then
+    if grep -q '^keepRemoteControlAwakeWhilePluggedIn = ' "$CODEX_CONF"; then
+      sed -i '' 's/^keepRemoteControlAwakeWhilePluggedIn = .*/keepRemoteControlAwakeWhilePluggedIn = true/' "$CODEX_CONF"
+    elif grep -qx '\[desktop\]' "$CODEX_CONF"; then
+      sed -i '' '/^\[desktop\]$/a\
+keepRemoteControlAwakeWhilePluggedIn = true
+' "$CODEX_CONF"
+    else printf '\n[desktop]\nkeepRemoteControlAwakeWhilePluggedIn = true\n' >> "$CODEX_CONF"; fi
+    echo "Codex: keeps this Mac awake for remote control while plugged in (restart the Codex app to apply)"
+  fi
+}
+
+record_vps_hostkey() {
+  if ssh-keygen -lF "$VPS_TAILNET" 2>/dev/null | grep -qF "$VPS_HOSTKEY"; then echo "VPS tailnet host key: already known"; return; fi
+  local tmp; tmp=$(mktemp)
+  ssh-keyscan -T 10 -t ed25519 "$VPS_TAILNET" 2>/dev/null > "$tmp"
+  if [[ "$(fp "$tmp")" != "$VPS_HOSTKEY" ]]; then rm -f "$tmp"; echo "VPS tailnet host key does not match $VPS_HOSTKEY; not recorded" >&2; exit 1; fi
+  cat "$tmp" >> "$HOME/.ssh/known_hosts"; rm -f "$tmp"
+  echo "VPS tailnet host key: recorded ($VPS_HOSTKEY)"
+}
+
+install_ssh_conf() {
+  printf '%s\n' "$CONF_TEXT" > "$SSH_CONF"; chmod 600 "$SSH_CONF"
+  touch "$HOME/.ssh/config"; chmod 600 "$HOME/.ssh/config"
+  if ! grep -qxF "$INCLUDE_LINE" "$HOME/.ssh/config"; then
+    cp -p "$HOME/.ssh/config" "$HOME/.ssh/config.bak-$(date +%Y%m%d)"
+    { echo "$INCLUDE_LINE"; cat "$HOME/.ssh/config.bak-$(date +%Y%m%d)"; } > "$HOME/.ssh/config"
+  fi
+  # ssh takes each setting from the first block that sets it, so the included file wins over older blocks.
+  [[ "$(ssh -G work-ops-vps | awk '/^hostname /{print $2}')" == "$VPS_TAILNET" ]] || { echo "ssh config: work-ops-vps does not resolve to the tailnet" >&2; exit 1; }
+  echo "ssh config: $SSH_CONF included"
+}
+
+authorise_peers() {
+  local own=""; [[ -r "$OWN_PUB" ]] && own=$(fp "$OWN_PUB")
+  mkdir -p "$HOME/.ssh"; chmod 700 "$HOME/.ssh"; touch "$AUTH"; chmod 600 "$AUTH"
+  local entry want line tmp blob
+  for entry in "${MAC_KEYS[@]}"; do
+    want=${entry%% *}; line=${entry#* }
+    [[ "$want" == "$own" ]] && continue
+    tmp=$(mktemp); printf '%s\n' "$line" > "$tmp"
+    [[ "$(fp "$tmp")" == "$want" ]] || { rm -f "$tmp"; echo "key line does not match $want" >&2; exit 1; }
+    if grep -qxF "$line" "$AUTH"; then rm -f "$tmp"; echo "already authorised: $want"; continue; fi
+    blob=$(awk '{for (i = 1; i <= NF; i++) if ($i ~ /^AAAA/) {print $i; exit}}' "$tmp")
+    if grep -qF "$blob" "$AUTH"; then
+      # Authorised by an older setup without the source limit: replace that line rather than skip it.
+      { grep -vF "$blob" "$AUTH"; cat "$tmp"; } > "$AUTH.new" && chmod 600 "$AUTH.new" && mv "$AUTH.new" "$AUTH"
+      echo "updated (source-limited): $want"
+    else
+      cat "$tmp" >> "$AUTH"
+      echo "authorised: $want"
+    fi
+    rm -f "$tmp"
+  done
+}
+
+install_dropin() {
+  local tmp; tmp=$(mktemp); printf '%s\n' "$DROPIN_TEXT" > "$tmp"
+  sudo install -m 644 -o root -g wheel "$tmp" "$DROPIN"; rm -f "$tmp"
+  if ! sudo /usr/sbin/sshd -t; then sudo rm -f "$DROPIN"; echo "sshd rejected the drop-in; removed it" >&2; exit 1; fi
+  local eff; eff=$(sudo /usr/sbin/sshd -T | grep -E '^(passwordauthentication|kbdinteractiveauthentication|permitrootlogin|allowagentforwarding) ')
+  echo "$eff"
+  if grep -qE ' yes$' <<<"$eff"; then echo "the drop-in is not effective; check /etc/ssh/sshd_config" >&2; exit 1; fi
+  # macOS starts sshd per connection, so a new connection already uses the new settings.
+  if remote_login; then
+    local m; m=$(offered || true)
+    [[ "$m" == publickey ]] || { echo "sshd still offers: $m" >&2; exit 1; }
+    echo "verified: sshd offers publickey only"
+  fi
+}
+
+case "${1:-}" in
+  "") report ;;
+  setup)
+    if [[ -n "${SSH_CONNECTION:-}" && ! -s "$AUTH" ]]; then
+      echo "refusing over SSH with no authorised keys: you could lock yourself out" >&2; exit 1
+    fi
+    authorise_peers
+    record_vps_hostkey
+    install_ssh_conf
+    command -v tmux >/dev/null || brew install tmux
+    install_remote
+    install_dropin
+    echo; report ;;
+  keys) authorise_peers; echo; report ;;
+  remote) install_remote; echo; report ;;
+  *) sed -n '2,13p' "$0"; exit 2 ;;
+esac

@@ -1,0 +1,15 @@
+[Unit]
+Description=work-ops loopback access guard (restrict who may reach the private workspace on 127.0.0.1:8769)
+Documentation=file:/srv/work-ops/work-ops/ops/vps/work-ops-loopback.nft
+# Never pull in nftables.service: its /etc/nftables.conf flushes the whole ruleset, UFW's included.
+After=ufw.service
+ConditionPathExists=/etc/work-ops/loopback.nft
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/nft -f /etc/work-ops/loopback.nft
+ExecStop=-/usr/sbin/nft delete table inet work-ops-loopback
+
+[Install]
+WantedBy=multi-user.target

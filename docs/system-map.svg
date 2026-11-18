@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2730" viewBox="0 0 1920 2730" role="img" aria-label="work-ops | the complete lifecycle"><title>work-ops | the complete lifecycle</title><desc>26 October 2026 • Opportunity-led implementation, not deployment evidence • Automatic data refresh; attended software releases</desc><defs><marker id="flow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#257b7a"/></marker><marker id="research" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#7660a4"/></marker><marker id="admin" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#8b6d37"/></marker></defs><g font-family="Arial, Helvetica, sans-serif"><rect width="1920" height="2730" fill="#f5f8f8"/>
+<text x="40" y="58" font-size="38" fill="#173c3b" font-weight="700">work-ops | the complete lifecycle</text>
+<text x="40" y="96" font-size="20" fill="#51686b" font-weight="400">26 October 2026 • Opportunity-led implementation, not deployment evidence • Automatic data refresh; attended software releases</text>
+<text x="40" y="133" font-size="18" fill="#51686b" font-weight="400">Solid teal: server data flow  •  Dashed purple: model-assisted research  •  Dashed brown: human action / administration</text>
+<rect x="40" y="180" width="1840" height="295" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="215" font-size="22" fill="#173c3b" font-weight="700">1  DISCOVER • automatic on the VPS; no Codex needed</text>
+<g data-box="Configured public sources"><rect x="70" y="245" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="278" font-size="22" fill="#173c3b" font-weight="700">Configured public sources</text>
+<text x="90" y="309" font-size="18" fill="#51686b" font-weight="400">Employer boards, Reed/Adzuna, HN, tenders,</text>
+<text x="90" y="333" font-size="18" fill="#51686b" font-weight="400">awards, funding and company records. Daily ~05:30</text>
+<text x="90" y="357" font-size="18" fill="#51686b" font-weight="400">UTC. Only configured/approved sources.</text>
+</g>
+<path d="M630,340 L680,340" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<g data-box="Scan → canonical import"><rect x="680" y="245" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="700" y="278" font-size="22" fill="#173c3b" font-weight="700">Scan → canonical import</text>
+<text x="700" y="309" font-size="18" fill="#51686b" font-weight="400">Match source IDs and compatible records. Retain</text>
+<text x="700" y="333" font-size="18" fill="#51686b" font-weight="400">evidence and observations. Missing facts stay</text>
+<text x="700" y="357" font-size="18" fill="#51686b" font-weight="400">unknown; preserve human edits.</text>
+</g>
+<path d="M1240,340 L1290,340" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<g data-box="Live SQLite database"><rect x="1290" y="245" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1310" y="278" font-size="22" fill="#173c3b" font-weight="700">Live SQLite database</text>
+<text x="1310" y="309" font-size="18" fill="#51686b" font-weight="400">One authoritative store on the VPS. Jobs, people,</text>
+<text x="1310" y="333" font-size="18" fill="#51686b" font-weight="400">organisations, source evidence, drafts,</text>
+<text x="1310" y="357" font-size="18" fill="#51686b" font-weight="400">decisions, receipts and outcomes.</text>
+</g>
+<rect x="40" y="510" width="1840" height="295" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="545" font-size="22" fill="#173c3b" font-weight="700">2  RECEIVE ALERTS • a separate automatic path into the same records</text>
+<g data-box="Gmail → Cloudflare buffer"><rect x="70" y="575" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="608" font-size="22" fill="#173c3b" font-weight="700">Gmail → Cloudflare buffer</text>
+<text x="90" y="639" font-size="18" fill="#51686b" font-weight="400">Only the exact LinkedIn job-alert sender. Gmail</text>
+<text x="90" y="663" font-size="18" fill="#51686b" font-weight="400">keeps originals. Private D1 retains mail until</text>
+<text x="90" y="687" font-size="18" fill="#51686b" font-weight="400">the VPS confirms durable receipt.</text>
+</g>
+<path d="M630,670 L680,670" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<g data-box="VPS email worker • every 15 min"><rect x="680" y="575" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="700" y="608" font-size="22" fill="#173c3b" font-weight="700">VPS email worker • every 15 min</text>
+<text x="700" y="639" font-size="18" fill="#51686b" font-weight="400">Pull → private spool → acknowledge → parse →</text>
+<text x="700" y="663" font-size="18" fill="#51686b" font-weight="400">canonical import. Hashes deduplicate retries.</text>
+<text x="700" y="687" font-size="18" fill="#51686b" font-weight="400">Retained mail survives parser failure.</text>
+</g>
+<path d="M1240,670 L1290,670" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<g data-box="Candidates + delivery receipts"><rect x="1290" y="575" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1310" y="608" font-size="22" fill="#173c3b" font-weight="700">Candidates + delivery receipts</text>
+<text x="1310" y="639" font-size="18" fill="#51686b" font-weight="400">New or existing jobs receive observations. Empty</text>
+<text x="1310" y="663" font-size="18" fill="#51686b" font-weight="400">polling proves execution only. Email arrival</text>
+<text x="1310" y="687" font-size="18" fill="#51686b" font-weight="400">never confirms a vacancy is open.</text>
+</g>
+<rect x="40" y="840" width="1840" height="295" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="875" font-size="22" fill="#173c3b" font-weight="700">3  ADD AN INCOMING ROLE • attended input; no recruiter-mail automation</text>
+<g data-box="Recruiter, referral or existing process"><rect x="70" y="905" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="938" font-size="22" fill="#173c3b" font-weight="700">Recruiter, referral or existing process</text>
+<text x="90" y="969" font-size="18" fill="#51686b" font-weight="400">Add incoming role in Jobs or This week. Record</text>
+<text x="90" y="993" font-size="18" fill="#51686b" font-weight="400">the actual stage and dates; include private</text>
+<text x="90" y="1017" font-size="18" fill="#51686b" font-weight="400">source evidence.</text>
+</g>
+<path d="M630,1000 L680,1000" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<g data-box="Preview → canonical save"><rect x="680" y="905" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="700" y="938" font-size="22" fill="#173c3b" font-weight="700">Preview → canonical save</text>
+<text x="700" y="969" font-size="18" fill="#51686b" font-weight="400">Match an existing role before saving. Keep</text>
+<text x="700" y="993" font-size="18" fill="#51686b" font-weight="400">employer, agency, recruiters and documents. No</text>
+<text x="700" y="1017" font-size="18" fill="#51686b" font-weight="400">invented application or sent message.</text>
+</g>
+<path d="M1240,1000 L1290,1000" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<g data-box="Active process → focused research"><rect x="1290" y="905" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1310" y="938" font-size="22" fill="#173c3b" font-weight="700">Active process → focused research</text>
+<text x="1310" y="969" font-size="18" fill="#51686b" font-weight="400">Preserve discovery and relationship history.</text>
+<text x="1310" y="993" font-size="18" fill="#51686b" font-weight="400">Private documents supply context; they never</text>
+<text x="1310" y="1017" font-size="18" fill="#51686b" font-weight="400">verify a public vacancy or contact.</text>
+</g>
+<rect x="40" y="1170" width="1840" height="295" rx="20" fill="#f1edf8" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="1205" font-size="22" fill="#173c3b" font-weight="700">4  RESEARCH • 09:00 / 19:00 Europe/London • limited maintained scope</text>
+<g data-box="Select + read public evidence"><rect x="70" y="1235" width="560" height="195" rx="14" fill="#f1edf8" stroke="#b7a7ce" stroke-width="2"/>
+<text x="90" y="1268" font-size="22" fill="#173c3b" font-weight="700">Select + read public evidence</text>
+<text x="90" y="1299" font-size="18" fill="#51686b" font-weight="400">Active and shortlisted work plus the top ten</text>
+<text x="90" y="1323" font-size="18" fill="#51686b" font-weight="400">discovery opportunities. Rotate oldest attempts;</text>
+<text x="90" y="1347" font-size="18" fill="#51686b" font-weight="400">active work first on ties. Blocked pages stay</text>
+<text x="90" y="1371" font-size="18" fill="#51686b" font-weight="400">gaps.</text>
+</g>
+<path d="M630,1330 L680,1330" fill="none" stroke="#7660a4" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#research)"/>
+<g data-box="Isolated Codex CLI → validation"><rect x="680" y="1235" width="560" height="195" rx="14" fill="#f1edf8" stroke="#b7a7ce" stroke-width="2"/>
+<text x="700" y="1268" font-size="22" fill="#173c3b" font-weight="700">Isolated Codex CLI → validation</text>
+<text x="700" y="1299" font-size="18" fill="#51686b" font-weight="400">ChatGPT account; selected context only. Search</text>
+<text x="700" y="1323" font-size="18" fill="#51686b" font-weight="400">finds URLs; actual fetched quotes support claims.</text>
+<text x="700" y="1347" font-size="18" fill="#51686b" font-weight="400">Scheduled session: no shell, record writes or</text>
+<text x="700" y="1371" font-size="18" fill="#51686b" font-weight="400">code changes.</text>
+</g>
+<path d="M1240,1330 L1290,1330" fill="none" stroke="#7660a4" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#research)"/>
+<g data-box="Save supported results"><rect x="1290" y="1235" width="560" height="195" rx="14" fill="#f1edf8" stroke="#b7a7ce" stroke-width="2"/>
+<text x="1310" y="1268" font-size="22" fill="#173c3b" font-weight="700">Save supported results</text>
+<text x="1310" y="1299" font-size="18" fill="#51686b" font-weight="400">Dated vacancy/route checks, demand evidence,</text>
+<text x="1310" y="1323" font-size="18" fill="#51686b" font-weight="400">terms and unknowns. Reuse current evidence. No</text>
+<text x="1310" y="1347" font-size="18" fill="#51686b" font-weight="400">generated messages or new draft approvals.</text>
+</g>
+<rect x="40" y="1500" width="1840" height="295" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="1535" font-size="22" fill="#173c3b" font-weight="700">5  ACT • ranked work and optional factual tracking; compose and send in Gmail</text>
+<g data-box="Private site → weekly action view"><rect x="70" y="1565" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="1598" font-size="22" fill="#173c3b" font-weight="700">Private site → weekly action view</text>
+<text x="90" y="1629" font-size="18" fill="#51686b" font-weight="400">Access PIN → Tunnel → loopback site. Active work</text>
+<text x="90" y="1653" font-size="18" fill="#51686b" font-weight="400">leads, then ten ranked opportunities, with more</text>
+<text x="90" y="1677" font-size="18" fill="#51686b" font-weight="400">available. Jobs owns the full lifecycle.</text>
+</g>
+<path d="M630,1660 L680,1660" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<g data-box="The owner sends outside the site"><rect x="680" y="1565" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="700" y="1598" font-size="22" fill="#173c3b" font-weight="700">The owner sends outside the site</text>
+<text x="700" y="1629" font-size="18" fill="#51686b" font-weight="400">Use work assessments to decide. Compose and send</text>
+<text x="700" y="1653" font-size="18" fill="#51686b" font-weight="400">in Gmail or an application site. People keeps</text>
+<text x="700" y="1677" font-size="18" fill="#51686b" font-weight="400">relationship context and contact history.</text>
+</g>
+<path d="M1240,1660 L1290,1660" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<g data-box="Record outcome → next action"><rect x="1290" y="1565" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1310" y="1598" font-size="22" fill="#173c3b" font-weight="700">Record outcome → next action</text>
+<text x="1310" y="1629" font-size="18" fill="#51686b" font-weight="400">Optionally record factual contact, reply and next</text>
+<text x="1310" y="1653" font-size="18" fill="#51686b" font-weight="400">step. Shared progress controls preserve retries</text>
+<text x="1310" y="1677" font-size="18" fill="#51686b" font-weight="400">and Undo. Saved wording stays read-only in</text>
+<text x="1310" y="1701" font-size="18" fill="#51686b" font-weight="400">history.</text>
+</g>
+<rect x="40" y="1830" width="1840" height="295" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="1865" font-size="22" fill="#173c3b" font-weight="700">6  MONITOR + RECOVER • deterministic checks; no autonomous repair</text>
+<g data-box="Caretaker • every 15 min"><rect x="70" y="1895" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="1928" font-size="22" fill="#173c3b" font-weight="700">Caretaker • every 15 min</text>
+<text x="90" y="1959" font-size="18" fill="#51686b" font-weight="400">Checks services, timers, receipts, source health</text>
+<text x="90" y="1983" font-size="18" fill="#51686b" font-weight="400">and backup evidence. Zero model calls. Healthy,</text>
+<text x="90" y="2007" font-size="18" fill="#51686b" font-weight="400">partial, waiting, unknown or failed.</text>
+</g>
+<path d="M630,1990 L680,1990" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<g data-box="Visible status → attended response"><rect x="680" y="1895" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="700" y="1928" font-size="22" fill="#173c3b" font-weight="700">Visible status → attended response</text>
+<text x="700" y="1959" font-size="18" fill="#51686b" font-weight="400">Failure causes appear on cards. Completed</text>
+<text x="700" y="1983" font-size="18" fill="#51686b" font-weight="400">research can recover with source gaps; repeated</text>
+<text x="700" y="2007" font-size="18" fill="#51686b" font-weight="400">crashes stay separate. /caretaker starts attended</text>
+<text x="700" y="2031" font-size="18" fill="#51686b" font-weight="400">diagnosis.</text>
+</g>
+<g data-box="Backups + recovery evidence"><rect x="1290" y="1895" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1310" y="1928" font-size="22" fill="#173c3b" font-weight="700">Backups + recovery evidence</text>
+<text x="1310" y="1959" font-size="18" fill="#51686b" font-weight="400">02:15 UTC: encrypted snapshots on the VPS. 07:30</text>
+<text x="1310" y="1983" font-size="18" fill="#51686b" font-weight="400">Mac-local: site DB copy + restore drill. Mail/raw</text>
+<text x="1310" y="2007" font-size="18" fill="#51686b" font-weight="400">research stay on VPS; Gmail keeps mail.</text>
+</g>
+<rect x="40" y="2160" width="1840" height="295" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="2195" font-size="22" fill="#173c3b" font-weight="700">7  CHANGE SOFTWARE • human-directed development and an explicitly authorised release</text>
+<g data-box="Problem → agent work → tests"><rect x="70" y="2225" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="2258" font-size="22" fill="#173c3b" font-weight="700">Problem → agent work → tests</text>
+<text x="90" y="2289" font-size="18" fill="#51686b" font-weight="400">The owner directs work; an attended agent</text>
+<text x="90" y="2313" font-size="18" fill="#51686b" font-weight="400">inspects evidence and changes code/docs.</text>
+<text x="90" y="2337" font-size="18" fill="#51686b" font-weight="400">Synthetic fixtures and strict browser/contract</text>
+<text x="90" y="2361" font-size="18" fill="#51686b" font-weight="400">tests.</text>
+</g>
+<path d="M630,2320 L680,2320" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<g data-box="Push main → authorised deploy"><rect x="680" y="2225" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="700" y="2258" font-size="22" fill="#173c3b" font-weight="700">Push main → authorised deploy</text>
+<text x="700" y="2289" font-size="18" fill="#51686b" font-weight="400">Private GitHub holds code, not live records. Push</text>
+<text x="700" y="2313" font-size="18" fill="#51686b" font-weight="400">does not deploy. /deploy needs an authorised</text>
+<text x="700" y="2337" font-size="18" fill="#51686b" font-weight="400">operator route; the VPS record gateway cannot</text>
+<text x="700" y="2361" font-size="18" fill="#51686b" font-weight="400">deploy.</text>
+</g>
+<path d="M1240,2320 L1290,2320" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<g data-box="Verify hosted site → review value"><rect x="1290" y="2225" width="560" height="195" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1310" y="2258" font-size="22" fill="#173c3b" font-weight="700">Verify hosted site → review value</text>
+<text x="1310" y="2289" font-size="18" fill="#51686b" font-weight="400">Check serving revision + hosted health. The owner</text>
+<text x="1310" y="2313" font-size="18" fill="#51686b" font-weight="400">reviews usefulness; findings inform the next</text>
+<text x="1310" y="2337" font-size="18" fill="#51686b" font-weight="400">change. VPS GitHub access is read-only.</text>
+</g>
+<text x="60" y="2530" font-size="23" fill="#173c3b" font-weight="700">DATA LOOP: source → validated import → live database → page refresh. No deployment is needed for record updates.</text>
+<text x="60" y="2575" font-size="23" fill="#173c3b" font-weight="700">CODE LOOP: evidence → attended changes → tests → push → authorised deploy → hosted checks → human review.</text>
+<text x="60" y="2620" font-size="22" fill="#8b6d37" font-weight="700">NOT IMPLEMENTED: scheduled Codex diagnosis, weekly software-improvement review, automatic code repair or deployment.</text>
+<text x="60" y="2670" font-size="20" fill="#51686b" font-weight="400">Research caps: 6 calls/pass, 12/day, 84/week and 30 targets/pass. One shared selection; no page-triggered research.</text></g></svg>

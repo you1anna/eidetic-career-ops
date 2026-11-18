@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily work-ops review after morning research
+
+[Timer]
+OnCalendar=*-*-* 10:00:00 Europe/London
+Persistent=true
+AccuracySec=30s
+Unit=wo-daily-review.service
+
+[Install]
+WantedBy=timers.target

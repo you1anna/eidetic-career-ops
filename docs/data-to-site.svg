@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2100" height="2430" viewBox="0 0 2100 2430" role="img" aria-label="From source to site | collection, filtering and visibility"><title>From source to site | collection, filtering and visibility</title><desc>30 October 2026 • Implementation map with release status below • A collected advert is not automatically a recommended role</desc><defs><marker id="flow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#257b7a"/></marker><marker id="research" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#7660a4"/></marker><marker id="admin" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#8b6d37"/></marker></defs><g font-family="Arial, Helvetica, sans-serif"><rect width="2100" height="2430" fill="#f5f8f8"/>
+<text x="40" y="58" font-size="38" fill="#173c3b" font-weight="700">From source to site | collection, filtering and visibility</text>
+<text x="40" y="96" font-size="20" fill="#51686b" font-weight="400">30 October 2026 • Implementation map with release status below • A collected advert is not automatically a recommended role</text>
+<text x="40" y="133" font-size="18" fill="#51686b" font-weight="400">Solid teal: server data flow  •  Dashed purple: model-assisted research  •  Dashed brown: human action / administration</text>
+<rect x="40" y="180" width="2020" height="300" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="215" font-size="22" fill="#173c3b" font-weight="700">1  GATHER • three supported entry paths</text>
+<g data-box="LinkedIn job-alert emails"><rect x="70" y="245" width="600" height="200" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="278" font-size="22" fill="#173c3b" font-weight="700">LinkedIn job-alert emails</text>
+<text x="90" y="309" font-size="18" fill="#51686b" font-weight="400">Gmail forwards the exact job-alert sender to</text>
+<text x="90" y="333" font-size="18" fill="#51686b" font-weight="400">Cloudflare Email Routing. The Worker commits raw MIME</text>
+<text x="90" y="357" font-size="18" fill="#51686b" font-weight="400">+ hash to a private D1 buffer. Every 15 minutes the</text>
+<text x="90" y="381" font-size="18" fill="#51686b" font-weight="400">VPS stores a durable spool copy, then acknowledges</text>
+<text x="90" y="405" font-size="18" fill="#51686b" font-weight="400">receipt.</text>
+</g>
+<g data-box="Configured external sources"><rect x="750" y="245" width="600" height="200" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="770" y="278" font-size="22" fill="#173c3b" font-weight="700">Configured external sources</text>
+<text x="770" y="309" font-size="18" fill="#51686b" font-weight="400">Daily VPS discovery, about 05:30 UTC: employer</text>
+<text x="770" y="333" font-size="18" fill="#51686b" font-weight="400">boards, Adzuna/Reed, Hacker News, tenders, awards,</text>
+<text x="770" y="357" font-size="18" fill="#51686b" font-weight="400">funding and company records. Only configured sources;</text>
+<text x="770" y="381" font-size="18" fill="#51686b" font-weight="400">approved keys, request budgets and page limits apply.</text>
+</g>
+<g data-box="Reviewed and human inputs"><rect x="1430" y="245" width="600" height="200" rx="14" fill="#fff4db" stroke="#d3ae64" stroke-width="2"/>
+<text x="1450" y="278" font-size="22" fill="#173c3b" font-weight="700">Reviewed and human inputs</text>
+<text x="1450" y="309" font-size="18" fill="#51686b" font-weight="400">Incoming roles, recruiter/referral evidence, LinkedIn</text>
+<text x="1450" y="333" font-size="18" fill="#51686b" font-weight="400">exports, researched findings and recorded</text>
+<text x="1450" y="357" font-size="18" fill="#51686b" font-weight="400">applications. Use the existing preview/import or</text>
+<text x="1450" y="381" font-size="18" fill="#51686b" font-weight="400">record gateway. Recruiter mail is not automatically</text>
+<text x="1450" y="405" font-size="18" fill="#51686b" font-weight="400">read by the job-alert filter.</text>
+</g>
+<rect x="40" y="560" width="2020" height="320" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="595" font-size="22" fill="#173c3b" font-weight="700">2  NORMALISE + FILTER • collection and candidacy are different decisions</text>
+<g data-box="Parse and retain source observations"><rect x="70" y="625" width="600" height="220" rx="14" fill="#e0f1eb" stroke="#8db7a5" stroke-width="2"/>
+<text x="90" y="658" font-size="22" fill="#173c3b" font-weight="700">Parse and retain source observations</text>
+<text x="90" y="689" font-size="18" fill="#51686b" font-weight="400">Parse email cards or adapter results into source IDs,</text>
+<text x="90" y="713" font-size="18" fill="#51686b" font-weight="400">canonical URLs, original dates and stated facts.</text>
+<text x="90" y="737" font-size="18" fill="#51686b" font-weight="400">Retain source observations and read receipts.</text>
+<text x="90" y="761" font-size="18" fill="#51686b" font-weight="400">Malformed mail stays quarantined. No invented pay,</text>
+<text x="90" y="785" font-size="18" fill="#51686b" font-weight="400">publication date or vacancy confirmation.</text>
+</g>
+<g data-box="Vacancy and tender admission checks"><rect x="750" y="625" width="600" height="220" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="770" y="658" font-size="22" fill="#173c3b" font-weight="700">Vacancy and tender admission checks</text>
+<text x="770" y="689" font-size="18" fill="#51686b" font-weight="400">Jobs: title scope, location, negative roles, domain,</text>
+<text x="770" y="713" font-size="18" fill="#51686b" font-weight="400">employer exclusions, stated pay and closure/expiry.</text>
+<text x="770" y="737" font-size="18" fill="#51686b" font-weight="400">Tenders use source-specific rules. Unknown stays</text>
+<text x="770" y="761" font-size="18" fill="#51686b" font-weight="400">unknown. Shared job-title equivalents are built,</text>
+<text x="770" y="785" font-size="18" fill="#51686b" font-weight="400">awaiting release.</text>
+</g>
+<g data-box="Retained evidence; no new job"><rect x="1430" y="625" width="600" height="220" rx="14" fill="#fff4db" stroke="#d3ae64" stroke-width="2"/>
+<text x="1450" y="658" font-size="22" fill="#173c3b" font-weight="700">Retained evidence; no new job</text>
+<text x="1450" y="689" font-size="18" fill="#51686b" font-weight="400">Rejected titles/terms, malformed input and capacity</text>
+<text x="1450" y="713" font-size="18" fill="#51686b" font-weight="400">deferrals are different outcomes, with reasons in</text>
+<text x="1450" y="737" font-size="18" fill="#51686b" font-weight="400">observations, quarantine or import receipts.</text>
+<text x="1450" y="761" font-size="18" fill="#51686b" font-weight="400">Board/feed adverts with unmatched titles keep</text>
+<text x="1450" y="785" font-size="18" fill="#51686b" font-weight="400">identity, lifecycle and stated terms, not full text,</text>
+<text x="1450" y="809" font-size="18" fill="#51686b" font-weight="400">unless a record holds them (awaiting release).</text>
+</g>
+<path d="M370,445 L370,515 L55,515 L55,735 L70,735" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M1050,445 L1050,515 L370,515" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M670,735 L750,735" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M1350,735 L1430,735" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<rect x="40" y="990" width="2020" height="320" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="1025" font-size="22" fill="#173c3b" font-weight="700">3  SAVE • one canonical record system</text>
+<g data-box="Automatic discovery capacity"><rect x="70" y="1055" width="600" height="220" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="1088" font-size="22" fill="#173c3b" font-weight="700">Automatic discovery capacity</text>
+<text x="90" y="1119" font-size="18" fill="#51686b" font-weight="400">Eligible new jobs/tenders compete for a bounded</text>
+<text x="90" y="1143" font-size="18" fill="#51686b" font-weight="400">working set: ten visible places, a thirty-candidate</text>
+<text x="90" y="1167" font-size="18" fill="#51686b" font-weight="400">research pool and at most sixty automatic additions</text>
+<text x="90" y="1191" font-size="18" fill="#51686b" font-weight="400">per rolling seven days. Over-limit evidence stays</text>
+<text x="90" y="1215" font-size="18" fill="#51686b" font-weight="400">pending. Existing matches can still receive evidence.</text>
+</g>
+<g data-box="Canonical import and record writes"><rect x="750" y="1055" width="600" height="220" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="770" y="1088" font-size="22" fill="#173c3b" font-weight="700">Canonical import and record writes</text>
+<text x="770" y="1119" font-size="18" fill="#51686b" font-weight="400">Resolve source identity, advert URL and organisation.</text>
+<text x="770" y="1143" font-size="18" fill="#51686b" font-weight="400">Preserve archives, human edits and workflow state.</text>
+<text x="770" y="1167" font-size="18" fill="#51686b" font-weight="400">Check revisions and write atomically. Reviewed/manual</text>
+<text x="770" y="1191" font-size="18" fill="#51686b" font-weight="400">intake uses its own validation, not the automatic</text>
+<text x="770" y="1215" font-size="18" fill="#51686b" font-weight="400">discovery allowance. Safe replays do not duplicate</text>
+<text x="770" y="1239" font-size="18" fill="#51686b" font-weight="400">records.</text>
+</g>
+<g data-box="Authoritative SQLite on the VPS"><rect x="1430" y="1055" width="600" height="220" rx="14" fill="#e0f1eb" stroke="#8db7a5" stroke-width="2"/>
+<text x="1450" y="1088" font-size="22" fill="#173c3b" font-weight="700">Authoritative SQLite on the VPS</text>
+<text x="1450" y="1119" font-size="18" fill="#51686b" font-weight="400">Jobs, tenders, people and organisations; sourced</text>
+<text x="1450" y="1143" font-size="18" fill="#51686b" font-weight="400">observations, checks and history. Funding/awards are</text>
+<text x="1450" y="1167" font-size="18" fill="#51686b" font-weight="400">organisation evidence, not invented vacancies.</text>
+<text x="1450" y="1191" font-size="18" fill="#51686b" font-weight="400">Application status is recorded from an actual action.</text>
+<text x="1450" y="1215" font-size="18" fill="#51686b" font-weight="400">Stored records and evidence are distinct from the</text>
+<text x="1450" y="1239" font-size="18" fill="#51686b" font-weight="400">visible shortlist.</text>
+</g>
+<path d="M1050,845 L1050,900 L55,900 L55,1165 L70,1165" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M370,845 L370,955 L800,955 L800,1055" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M2030,345 L2078,345 L2078,970 L1050,970 L1050,1055" fill="none" stroke="#8b6d37" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#admin)"/>
+<path d="M670,1165 L750,1165" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M1350,1165 L1430,1165" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<rect x="40" y="1430" width="2020" height="345" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="1465" font-size="22" fill="#173c3b" font-weight="700">4  RESEARCH + RANK + DISPLAY • separate, linked operations</text>
+<g data-box="Focused public-evidence research"><rect x="70" y="1495" width="600" height="230" rx="14" fill="#f1edf8" stroke="#b7a7ce" stroke-width="2"/>
+<text x="90" y="1528" font-size="22" fill="#173c3b" font-weight="700">Focused public-evidence research</text>
+<text x="90" y="1559" font-size="18" fill="#51686b" font-weight="400">09:00 / 19:00 Europe/London. Active/shortlisted work</text>
+<text x="90" y="1583" font-size="18" fill="#51686b" font-weight="400">and selected discovery targets, within the existing</text>
+<text x="90" y="1607" font-size="18" fill="#51686b" font-weight="400">allowance. Codex reads public evidence; a trusted</text>
+<text x="90" y="1631" font-size="18" fill="#51686b" font-weight="400">worker validates and imports supported facts/checks.</text>
+<text x="90" y="1655" font-size="18" fill="#51686b" font-weight="400">Blocked reads remain gaps. The model cannot write</text>
+<text x="90" y="1679" font-size="18" fill="#51686b" font-weight="400">directly.</text>
+</g>
+<g data-box="Derived assessment and selection"><rect x="750" y="1495" width="600" height="230" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="770" y="1528" font-size="22" fill="#173c3b" font-weight="700">Derived assessment and selection</text>
+<text x="770" y="1559" font-size="18" fill="#51686b" font-weight="400">On read, shared rules assess remit, requirements,</text>
+<text x="770" y="1583" font-size="18" fill="#51686b" font-weight="400">terms and evidence freshness. Selection is derived;</text>
+<text x="770" y="1607" font-size="18" fill="#51686b" font-weight="400">viewing does not rewrite records or trigger research.</text>
+<text x="770" y="1631" font-size="18" fill="#51686b" font-weight="400">The site and research worker use the same maintained</text>
+<text x="770" y="1655" font-size="18" fill="#51686b" font-weight="400">opportunity selection. Saved/active work is treated</text>
+<text x="770" y="1679" font-size="18" fill="#51686b" font-weight="400">separately.</text>
+</g>
+<g data-box="Private site • browser / phone"><rect x="1430" y="1495" width="600" height="230" rx="14" fill="#e0f1eb" stroke="#8db7a5" stroke-width="2"/>
+<text x="1450" y="1528" font-size="22" fill="#173c3b" font-weight="700">Private site • browser / phone</text>
+<text x="1450" y="1559" font-size="18" fill="#51686b" font-weight="400">Cloudflare Access + Tunnel → VPS API/site. Reload</text>
+<text x="1450" y="1583" font-size="18" fill="#51686b" font-weight="400">after data updates. This week shows selected work;</text>
+<text x="1450" y="1607" font-size="18" fill="#51686b" font-weight="400">Jobs shows processes and folded reference/history;</text>
+<text x="1450" y="1631" font-size="18" fill="#51686b" font-weight="400">search finds retained records. Source/email/research</text>
+<text x="1450" y="1655" font-size="18" fill="#51686b" font-weight="400">panels expose receipts, failures and gaps.</text>
+</g>
+<path d="M1730,1275 L1730,1385 L1050,1385 L1050,1495" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M750,1605 L670,1605" fill="none" stroke="#7660a4" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#research)"/>
+<path d="M70,1605 L20,1605 L20,1350 L800,1350 L800,1275" fill="none" stroke="#7660a4" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#research)"/>
+<path d="M1350,1605 L1430,1605" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<rect x="40" y="1830" width="2020" height="320" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="1865" font-size="22" fill="#173c3b" font-weight="700">5  WHY A ROLE CAN BE MISSING • inspect the boundary, not just the final page</text>
+<g data-box="Not collected"><rect x="70" y="1895" width="600" height="220" rx="14" fill="#fff4db" stroke="#d3ae64" stroke-width="2"/>
+<text x="90" y="1928" font-size="22" fill="#173c3b" font-weight="700">Not collected</text>
+<text x="90" y="1959" font-size="18" fill="#51686b" font-weight="400">No matching forwarded alert, an untracked employer, a</text>
+<text x="90" y="1983" font-size="18" fill="#51686b" font-weight="400">capped source page or a failed read. Gmail forwarding</text>
+<text x="90" y="2007" font-size="18" fill="#51686b" font-weight="400">is not retrospective. Collection is limited to</text>
+<text x="90" y="2031" font-size="18" fill="#51686b" font-weight="400">configured sources; an empty successful run does not</text>
+<text x="90" y="2055" font-size="18" fill="#51686b" font-weight="400">prove complete market coverage.</text>
+</g>
+<g data-box="Collected, but not admitted"><rect x="750" y="1895" width="600" height="220" rx="14" fill="#fff4db" stroke="#d3ae64" stroke-width="2"/>
+<text x="770" y="1928" font-size="22" fill="#173c3b" font-weight="700">Collected, but not admitted</text>
+<text x="770" y="1959" font-size="18" fill="#51686b" font-weight="400">A title/location/factual rule rejected it, parsing</text>
+<text x="770" y="1983" font-size="18" fill="#51686b" font-weight="400">quarantined it, or the automatic allowance deferred</text>
+<text x="770" y="2007" font-size="18" fill="#51686b" font-weight="400">it. Inspect original evidence and the recorded</text>
+<text x="770" y="2031" font-size="18" fill="#51686b" font-weight="400">reason. Changing a rule is not proof that every</text>
+<text x="770" y="2055" font-size="18" fill="#51686b" font-weight="400">historical rejection has been recovered.</text>
+</g>
+<g data-box="Saved, but not featured"><rect x="1430" y="1895" width="600" height="220" rx="14" fill="#fff4db" stroke="#d3ae64" stroke-width="2"/>
+<text x="1450" y="1928" font-size="22" fill="#173c3b" font-weight="700">Saved, but not featured</text>
+<text x="1450" y="1959" font-size="18" fill="#51686b" font-weight="400">A record may be retained as reference, need</text>
+<text x="1450" y="1983" font-size="18" fill="#51686b" font-weight="400">verification, sit below the selected working set or</text>
+<text x="1450" y="2007" font-size="18" fill="#51686b" font-weight="400">belong to history. Search and the Jobs reference view</text>
+<text x="1450" y="2031" font-size="18" fill="#51686b" font-weight="400">can still find it. Candidate, confirmed-open vacancy</text>
+<text x="1450" y="2055" font-size="18" fill="#51686b" font-weight="400">and recommended opportunity are different states.</text>
+</g>
+<g data-box="30 OCTOBER STATUS • distinguish the live recovery from the pending software release"><rect x="70" y="2190" width="1960" height="150" rx="14" fill="#fff4db" stroke="#d3ae64" stroke-width="2"/>
+<text x="90" y="2223" font-size="22" fill="#173c3b" font-weight="700">30 OCTOBER STATUS • distinguish the live recovery from the pending software release</text>
+<text x="90" y="2254" font-size="18" fill="#51686b" font-weight="400">The historical alert backfill and Hyperlayer application record are live. Shared title-family matching and the new public Rippling/Hyperlayer reader are implemented and tested but</text>
+<text x="90" y="2278" font-size="18" fill="#51686b" font-weight="400">await an explicitly authorised deployment. Code push alone changes no live scanner behavior. Ordinary record updates need no deployment. This diagram is documentation, not live</text>
+<text x="90" y="2302" font-size="18" fill="#51686b" font-weight="400">telemetry.</text>
+</g>
+<text x="70" y="2383" font-size="19" fill="#51686b" font-weight="400">Owners: scan_alerts / scan_* → record_imports + discovery_intake → records / SQLite → relevance + work_selection → site</text><rect x="122" y="902" width="229.6" height="29" rx="5" fill="#f5f8f8"/><text x="130" y="922" font-size="18" fill="#257b7a" font-weight="600">Eligible jobs / tenders</text>
+<rect x="402" y="924" width="395.2" height="29" rx="5" fill="#f5f8f8"/><text x="410" y="944" font-size="18" fill="#257b7a" font-weight="600">Organisation signals: type-specific rules</text>
+<rect x="1502" y="935" width="220.39999999999998" height="29" rx="5" fill="#f5f8f8"/><text x="1510" y="955" font-size="18" fill="#8b6d37" font-weight="600">Reviewed record writes</text>
+<rect x="242" y="1318" width="431.99999999999994" height="29" rx="5" fill="#f5f8f8"/><text x="250" y="1338" font-size="18" fill="#7660a4" font-weight="600">Validated evidence returns to the same writer</text></g></svg>

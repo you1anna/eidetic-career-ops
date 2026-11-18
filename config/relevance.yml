@@ -1,0 +1,237 @@
+# Derived relevance: how the workspace ranks records for the owner's attention.
+# Read by workspace/relevance.py on every /api/state. Scores are computed on read, shown with their
+# reasons and never stored or used to change a record's state. An unstated fact is neutral.
+# Targets implement config/profile.yml (archetypes, rate floor, location rules); values are not
+# copied from that narrative profile at runtime. Preparation affects readiness, never fit.
+
+bands:
+  strong: 55      # score >= strong  -> "Strong"
+  possible: 20    # score >= possible -> "Possible"; below -> "Low"
+
+# Read-time comparison of explicit work with the sourced proof blocks in problem_playbooks.yml.
+# A supported remit outweighs every positive secondary signal combined. Scores are priorities,
+# not probability or percentage fit; omitted experience never establishes inability.
+fit:
+  supported_weight: 100
+  adjacent_weight: 40
+  secondary_positive_cap: 40
+
+titles:
+  # Families in match order: the first family with a term in the title wins. Each names the CV to send
+  # (config/cvs.yml; records/career/rates.md and current profile for rate policy). 28 Sep 2026: QE roles are the cash
+  # channel, routed rather than filtered, and rank below leadership, AI and platform roles on title
+  # (archive/plans/2026-09-28-problem-first-search.md).
+  negative:
+    weight: -40
+    terms: ["Account Executive", "Sales", "Marketing", "Marketer", "Legal", "Recruiter", "Sourcer",
+            "Finance", "Customer Success", "Designer", "Data Scientist", "Junior", "Graduate", "Intern",
+            "Internship", "Apprentice", "Early Career", "New Grad", "SC Cleared", "DV Cleared",
+            "Security Cleared", "Clearance"]
+  families:
+    - id: quality
+      label: "QE target, your cash channel"
+      weight: 22
+      cv: QE
+      terms: ["Head of Quality", "Quality Engineering", "QA Engineering", "Test Engineering", "Head of QA",
+              "QA Lead", "Lead QA", "QA Manager", "Test Manager", "Head of Test", "Head of Testing",
+              "Test Lead", "Test Architect", "QA Architect", "Quality Architect", "Programme Test"]
+    - id: ai
+      label: "AI and evaluation target"
+      weight: 30
+      # cv_routes refines hands-on evaluation to QELead and Forward Deployed to FDE.
+      cv: QE
+      cv_by_term: {"Forward Deployed": FDE, "Innovation Lab": FDE}
+      terms: ["Evaluation", "Evals", "AI Reliability", "AI Quality", "AI Assurance", "Forward Deployed", "Innovation Lab"]
+    - id: leadership
+      label: "Leadership target"
+      weight: 30
+      cv: Director
+      terms: ["Head of Engineering", "Director of Engineering", "Engineering Director", "VP Engineering",
+              "VP of Engineering", "Vice President of Engineering", "Vice President Engineering",
+              "Engineering Manager", "Engineering Lead", "Engineering Leader", "Technical Lead", "Lead Engineer", "Head of Platform",
+              "Head of Delivery", "Head of Technology", "Head of AI", "Director of Software Engineering", "CTO"]
+    - id: adjacent
+      label: "Adjacent to your targets"
+      weight: 12
+      cv: FDE
+      cv_by_term: {"Founding Engineer": Founding, "Quality Engineer": QE, "SDET": QE,
+                   "Developer Productivity": Director, "Developer Experience": Director,
+                   "Engineering Productivity": Director}
+      terms: ["Founding Engineer", "Founding Software Engineer", "Principal Engineer", "Staff Engineer", "Staff Software Engineer", "Staff Product Engineer",
+              "Platform Engineer", "Product Engineer", "Solutions Architect", "Integration Engineer",
+              "Implementation Engineer", "Deployment Engineer", "Developer Productivity", "Developer Experience",
+              "Engineering Productivity", "Applied AI Engineer", "Applied AI Lead", "Applied AI & ML Lead", "AI Engineer", "Quality Engineer", "SDET",
+              "Software Development Engineer in Test", "QA Automation Engineer"]
+    - id: weak
+      label: "Mostly pre-sales; weak match"
+      weight: 0
+      cv: ""
+      terms: ["Solutions Engineer", "Sales Engineer", "Customer Engineer"]
+  unmatched_weight: -15
+
+# CV suggestions match title wording, including agency adverts. Routing does not change title weights.
+# Specific quality titles precede broader engineering titles to avoid confusing QE management with
+# general engineering management. HeadQE remains a compatibility alias for QE in the write API.
+cv_routes:
+  - cv: QE
+    family: quality
+    terms: ["Head of Quality", "Head of QA", "Head of QE", "Head of Test", "Head of Testing", "Quality Director",
+            "Quality Engineering Director", "Director of Quality", "Director, Quality", "Director Quality", "Director of QA", "QA Director",
+            "Head of AI Evaluation", "Director of AI Evaluation", "Head of Evaluation", "Head of AI Reliability",
+            "Director of AI Reliability", "Head of AI Quality", "Director of AI Quality"]
+  - cv: QELead
+    family: quality
+    terms: ["Quality Engineering", "QA Engineering", "Test Engineering", "QA Lead", "Lead QA", "QE Lead", "Lead QE",
+            "QA Manager", "QE Manager", "Test Manager", "Test Lead", "Test Architect", "QA Architect", "Quality Architect",
+            "Programme Test", "Quality Engineer", "SDET", "Software Development Engineer in Test", "QA Automation Engineer"]
+  - cv: QELead
+    family: ai
+    terms: ["AI Evaluation", "Evaluation", "Evals", "AI Reliability", "AI Quality", "AI Assurance"]
+  - cv: FDE
+    family: ai
+    terms: ["Forward Deployed", "Innovation Lab"]
+  - cv: Founding
+    family: adjacent
+    terms: ["Founding Engineer", "Founding Software Engineer"]
+  - cv: Director
+    family: leadership
+    terms: ["Head of Engineering", "Director of Engineering", "Engineering Director", "VP Engineering",
+            "VP of Engineering", "Director of Software Engineering", "Director, Software Engineering",
+            "Vice President of Engineering", "Vice President Engineering", "Chief Technology Officer",
+            "Head of Platform", "Head of Delivery", "Head of Technology", "Head of AI", "CTO"]
+  - cv: Manager
+    family: leadership
+    terms: ["Engineering Manager", "Engineering Lead", "Engineering Leader", "Technical Lead", "Lead Engineer"]
+  - cv: FDE
+    family: adjacent
+    terms: ["Systems Engineer", "Systems Integration", "Integration Engineer", "Implementation Engineer", "Deployment Engineer", "Solutions Architect",
+            "Applied AI Lead", "Applied AI & ML Lead", "Staff Software Engineer"]
+
+exclusions:
+  - company: Excludo
+    reason: "The owner explicitly excluded Excludo on 6 October 2026."
+    source_scopes: ["board:greenhouse:excludo"]
+
+engagement:
+  preferred: ["interim", "contract", "ftc", "fractional"]
+  preferred_weight: 0
+  # Equal suitability uses contract preference in work_selection, never a second fit bonus.
+  permanent_weight: 0
+
+# Work lanes: which section of the site a job, tender or opportunity sits in. 25 Sep 2026:
+# contract and client work comes first for now; permanent roles stay kept and visible after it.
+# Tenders are direct client work, so they sit with contracts. An opportunity with no stated
+# engagement is the owner's own pipeline. Any other unstated engagement stays "terms not stated".
+lanes:
+  contract: ["contract", "interim", "ftc", "fractional", "procurement"]
+  permanent: ["permanent"]
+
+location:
+  home: ["london", "united kingdom", "uk", "england", "britain", "scotland", "wales"]
+  home_weight: 10
+  remote_open: ["europe", "emea", "worldwide", "anywhere", "global", "gmt", "cet", "uk time"]
+  remote_open_weight: 5
+  # A place named without remote work means on-site abroad: the owner does not relocate.
+  abroad: ["france", "paris", "germany", "berlin", "munich", "italy", "milan", "poland", "warsaw", "spain",
+           "madrid", "barcelona", "portugal", "porto", "lisbon", "netherlands", "amsterdam", "belgium",
+           "brussels", "ireland", "dublin", "sweden", "stockholm", "denmark", "copenhagen", "norway",
+           "oslo", "finland", "helsinki", "switzerland", "zurich", "austria", "vienna", "czech", "prague",
+           "estonia", "tallinn", "istanbul", "turkey", "israel", "tel aviv", "dubai", "uae", "singapore",
+           "india", "bangalore", "bengaluru", "australia", "sydney", "japan", "tokyo", "canada", "toronto",
+           "montreal", "vancouver", "united states", "usa", "u.s.", "us", "new york", "nyc", "ny",
+           "san francisco", "sf", "boston", "seattle", "austin", "chicago", "denver", "los angeles",
+           "washington", "arlington", "va", "ca", "latam", "brazil", "mexico"]
+  onsite_abroad_weight: -35
+  remote_abroad_weight: -20
+
+pay:
+  # General baseline. The owner's 15 Oct scoped flexibility is recorded in profile.yml; applying it
+  # to shared qualification is planned in the outreach plan's integration opportunities section.
+  floor_day_gbp: 450
+  floor_year_gbp: 68000
+  meets_weight: 10
+  below_weight: -20
+
+freshness:
+  # Days since the record's factual date (publication for adverts).
+  fresh_days: 14
+  fresh_weight: 10
+  stale_days: 60
+  stale_weight: -10
+  old_days: 150
+  old_weight: -20
+  gone_lifecycles: ["closed", "expired", "removed", "historical"]
+  gone_weight: -40
+  # Days since any scanner last listed an advert it had found (archive/plans/2026-10-04-stale-adverts.md).
+  unseen_days: 14
+  unseen_weight: -30
+
+# Adverts a scan created in the last `days` days (today included): the Overview's "Found this week". It adds no points; it only says when and where a find came from. `via` names each source by
+# the prefix of the record's insert-time source_file; the first matching prefix wins.
+found:
+  days: 7
+  via:
+    "source:feed:adzuna:": "Adzuna"
+    "source:feed:reed:": "Reed"
+    "source:feed:": "a job feed"
+    "source:board:": "an employer's jobs board"
+    "source:hn:": "Hacker News"
+    "source:tender:": "a public tender notice"
+    "pending/": "the daily scan"
+
+activity:
+  # Days since the last evidenced activity with the owner (interaction, touch or state change).
+  recent_days: 45
+  recent_weight: 15
+  known_days: 400
+  known_weight: 8
+
+signals:
+  duplicate_weight: -60       # the same advert is recorded twice; the other copy ranks
+  on_hold_weight: -25         # the recorded next step says it is on hold
+  on_hold_terms: ["on hold", "deprioritised", "deprioritized", "parked"]
+  watch_weight: -15           # the next step is only to keep watching a board
+  watch_terms: ["watch the", "keep watching", "watch their"]
+  pipeline_worked_weight: 5   # a pipeline row worked on recently; not contact with the owner
+  known_person_weight: 30     # linked person with a known, in-touch or close relationship tier
+  evidenced_contact_weight: 45   # evidenced close, in-touch or known tier; connection/one-way alone is insufficient
+  no_contact_weight: -10
+  live_opportunity_weight: 8  # person is the route into an open opportunity
+  # "vice president" and "svp" added 1 Oct 2026: Wayve's page says "Sr. Vice President, Engineering".
+  senior_person_terms: ["cto", "chief", "director", "head", "vp", "svp", "vice president", "founder", "cofounder", "co-founder", "managing partner", "owner"]
+  senior_person_weight: 5
+  relevant_role_weight: 10    # per strong or possible job at an organisation, capped
+  relevant_role_cap: 30
+  preferred_channel_terms: ["tier 1", "tier 2", "preferred channel"]
+  preferred_channel_weight: 10
+  # A company named in a funding story (config/portals.yml `signals`): a research trigger, not proof
+  # of consulting demand. Dated by publication; after funding_days it no longer counts.
+  funding_weight: 15
+  funding_days: 120
+  # A company to approach (funded, or advertising a leadership or AI role itself) with a named CTO, founder or head.
+  decision_maker_weight: 10
+
+# Organisations whose practice matches the owner's work (records' `subtype`, set by research batches):
+# a route to associate, contract or client work, so they rank among organisations to watch.
+practices:
+  - terms: ["qe consultancy"]
+    weight: 20
+    reason: "Quality engineering consultancy: a route to associate, contract or client work"
+  - terms: ["ai assurance"]
+    weight: 20
+    reason: "AI assurance or evaluation firm: close to your AI quality work"
+
+states:
+  # Readiness does not improve fit. The reader also caps positive working-state weights at zero.
+  working_state: {in_progress: 0, ready: 0, waiting: 0, blocked: 0, paused: -20, done: -40}
+  stage: {lead: 0, contacted: 20, conversation: 40, proposal: 45, won: 10, lost: -45}
+  job_status: {candidate: 0, pursue: 25, applied: 35, responded: 40, interview: 45, offer: 50, skip: -40, rejected: -60, closed: -60}
+  relationship: {none: 0, cold: 0, warm: 20, active: 30, dormant: 0, do_not_contact: -80}
+  org_status: {not_contacted: 0, called_no_answer: 5, called_brief_received: 20, on_books: 25, no_relevant_desk: -15, declined: -25, joined: 20}
+
+# Ten visible working places; bounded qualification before selection (31 October repair).
+discovery_capacity:
+  working_limit: 10
+  additions_per_seven_days: 60
+  research_pool_limit: 30
+  qualification_days: 14

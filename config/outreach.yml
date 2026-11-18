@@ -1,0 +1,45 @@
+# Outreach lifecycle settings, read by workspace/approaches.py (archive/plans/2026-10-14-outreach-focus.md).
+# The owner's choices, 12–14 October 2026. Everything here is derived on read; nothing is stored as a due date.
+
+# Application/company-process intervals only. Personal contacts never acquire a suggested
+# follow-up or no-response state from elapsed time; only reported facts change their status.
+# Working days count Monday to Friday, without a bank-holiday calendar.
+followup:
+  desk: {days: 3, working_days: true}
+  other: {days: 10}      # notes to people he doesn't know, applications, his own opportunities
+
+# Historical weekly-storage compatibility settings. Production reads never select a new
+# personal week, expose membership actions or use it for research admission.
+plan:
+  size: 5
+  max: 10
+  people_only: true
+  contract_slots: 0
+  # Someone the owner approached recently is not suggested again unless a new reason appears.
+  recent_contact_days: 30
+
+# What the owner says to people he knows when there is no specific reason (this repository owns this wording).
+ask: "Who do you know whose team is about to ship an AI feature, or whose engineering group needs steady leadership for a few months?"
+
+# The last talking point on each move: what the owner asks for, by the kind of ask on the person (Release 2).
+# Three short lines he mixes in his own messages (14 October: "simplify them down to 3 max").
+# No prices and no generic offer lines. `introduction` is his referral ask for a senior role (approved
+# 15 October). Someone he knows with no kind of ask set gets `catch_up`, never a referral by default, and
+# a recruiter `availability`. A person's prepared approach (research) can replace these with a fitted ask.
+asks:
+  catch_up: "It has been a while: what are you working on these days?"
+  introduction: "Is anyone in your network hiring an engineering or quality leader? An introduction would really help."
+  availability: "I can start contract or interim work straight away."
+
+# A decision-maker the owner doesn't know enters his week only when their role was read on the company's
+# own page within this many days (verification_level primary-read; the record's date, or the day it
+# was recorded).
+contact_max_age_days: 90
+
+# Actual leadership start dates, not announcement or review dates. Explicit partner evidence is
+# checked against its source date as well as its review date.
+new_leader_max_days: 90
+route_evidence_max_age_days: 90
+
+# No offer catalogue: what the owner proposes depends on each approach's evidence, remit and terms
+# (14 October). The brief's "How you could help" and the drafted notes carry it.

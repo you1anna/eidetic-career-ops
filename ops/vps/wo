@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# `wo` on the VPS: run the work-ops CLI as the service user against the canonical database.
+# Installed at /usr/local/bin/wo so agent sessions can run `ssh ops@vps wo <cmd>`.
+exec sudo -n -u workops env WO_DB=/srv/work-ops/data/work-ops.db TMPDIR=/srv/work-ops/run TZ=Europe/London \
+  /srv/work-ops/venv/bin/python /srv/work-ops/work-ops/tools/wo.py "$@"

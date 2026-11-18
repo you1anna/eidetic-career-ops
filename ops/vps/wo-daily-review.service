@@ -1,0 +1,32 @@
+[Unit]
+Description=work-ops bounded daily product review in Codex
+After=network-online.target wo-research-codex.socket
+Requires=wo-research-codex.socket
+ConditionPathExists=/srv/work-ops/data/work-ops.db
+
+[Service]
+Type=oneshot
+User=workops
+Group=workops
+UMask=0077
+Environment=TZ=Europe/London
+WorkingDirectory=/srv/work-ops/work-ops
+ExecStart=/srv/work-ops/venv/bin/python tools/daily_review.py --db /srv/work-ops/data/work-ops.db --data /srv/work-ops/data
+TimeoutStartSec=420
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+AmbientCapabilities=
+ReadWritePaths=/srv/work-ops/data
+InaccessiblePaths=/srv/work-ops/.ssh /home/codex
+MemoryMax=384M
+CPUQuota=100%
+

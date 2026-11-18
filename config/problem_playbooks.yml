@@ -1,0 +1,87 @@
+# Suggestions are bounded hypotheses, never claims that a prospect has a diagnosed problem.
+# Proof examples belong to the fictional candidate in config/profile.yml; replace them with your own.
+# No prices, engagement lengths or guarantees are inferred from these examples.
+research_max_age_days: 90
+award_max_age_days: 90
+advert_max_age_days: 45
+advert_seen_max_age_days: 14
+# Rank sourced opportunities and evidenced access, never prepared prose or approval status.
+# A named contact plus a current sourced remit outranks a generic historical referral.
+priority:
+  access: {close: 100, in_touch: 50, known: 20, connected: 5, cold: 0}
+  sourced_remit: 50
+  named_contact: 25
+  engagement: {interim: 15, contract: 15, ftc: 8, permanent: 0, unknown: 0}
+playbooks:
+  - id: ai_evaluation
+    label: Existing-system AI evaluation
+    fit:
+      # These bounded mappings reference the proof below, not the broader prospecting cues.
+      remit: ['\b(?:build|develop|design|implement|lead|own|improve|deliver)\w*\b.{0,90}\b(?:ai evaluation|llm evaluation|evaluation harness|evaluation suite|ai security testing)\b']
+      adjacent: ['\b(?:build|develop|design|implement|lead|own|improve|deliver)\w*\b.{0,90}\bevaluation hooks?\b']
+      capabilities: ['(?:ai|llm|model) evaluation', 'evaluation (?:harnesses|harness|suites|suite)', 'ai security testing']
+    cues: [model evaluation, agent evaluation, llm evaluation, ai evaluation, ai validation,
+           ai safety evaluations, evaluation harness, guardrails, production ai, agentic workflows,
+           agentic products, agentic integrations, release evidence]
+    hypothesis: They may need clearer evidence that an existing AI workflow behaves acceptably before it reaches more users.
+    help: Map the existing workflow and its failure modes, define bounded evaluation cases and release evidence, then recommend the smallest useful evaluation or guardrail change.
+    proof:
+      text: "At Example Corp, the candidate built AI evaluation and security coverage with versioned cases, regression gates, production feedback and release documentation."
+      detail: "The suite covered one multi-tenant assistant across web and mobile. Bounded properties, semantic assertions, classifier checks and repeated runs tested variable output."
+      url: https://portfolio.example.com/work/
+    question: Which failures in the current AI workflow would stop a release, and what evidence do you have for those decisions today?
+    unknowns: [Which AI workflow is already in use, Who owns its release decision, Whether outside help is wanted]
+    expected_result: A named workflow and decision owner, the evidence gap they recognise, and a clear decision on whether a bounded evaluation intervention is useful.
+  - id: release_reliability
+    label: Release reliability and quality
+    fit:
+      remit: ['\b(?:build|develop|design|implement|lead|own|improve|deliver|manage)\w*\b.{0,90}\b(?:release readiness|release reliability|release gates|test automation|software testing|quality engineering|incident analysis)\b']
+      capabilities: ['test automation', 'software testing', 'quality engineering', 'release (?:readiness|gates|reliability)', '(?:production )?incident analysis']
+    cues: [release readiness, operational readiness, release reliability, release gates, quality engineering,
+           delivery quality, incident rate, production incidents, incident prevention, slo coverage,
+           test automation, quality metrics, engineering quality]
+    hypothesis: They may need a clearer view of delivery risk and practical changes that help engineering teams release with confidence.
+    help: Review their incident, release and test evidence with the people who own it, identify where preventable failures enter, and propose a small set of changes with explicit measures.
+    proof:
+      text: "At Example Corp, the candidate built repeatable test environments, parallel suites, reporting and shared frameworks around several hundred end-to-end tests."
+      detail: "CI orchestration covered pull-request, release and nightly runs, with test ownership and framework adoption across teams. A separate incident review classified a quarter of production incidents by preventable cause."
+      url: https://portfolio.example.com/work/
+    question: Where do release or incident decisions lack reliable evidence today, and which improvement would make the biggest difference to your teams?
+    unknowns: [Which delivery risks the team actually wants to change, Who owns the engineering outcome, Whether an interim or bounded engagement is possible]
+    expected_result: Agreement on one recognised delivery risk, its owner and a useful next step based on their evidence.
+  - id: integration_recovery
+    label: Integration and recovery
+    fit:
+      remit: ['\b(?:build|develop|design|implement|lead|own|improve|deliver|recover|restore)\w*\b.{0,90}\b(?:(?:data|planning[- ]data) integrations?|production[- ]data (?:recovery|correction)|inherited applications?)\b']
+      adjacent: ['\b(?:build|develop|design|implement|lead|own|improve|deliver)\w*\b.{0,90}\b(?:api|application) integrations?\b']
+      capabilities: ['(?:data|planning[- ]data) integrations?', 'production[- ]data (?:recovery|correction)', 'developer handover']
+    cues: [production-grade, production grade, platform modernisation, platform modernization,
+           legacy systems, data recovery, inherited application, data integration, integrations,
+           integration reliability, customer deployments, developer platform, infrastructure toil]
+    hypothesis: They may need help making an existing application or integration reliable enough for the people who depend on it.
+    help: Trace the existing user and data flow, find where integration or data failures create operational work, and define a bounded recovery or improvement with a maintainable handover.
+    proof:
+      text: "For a small client, the candidate rebuilt a scoring and public-data integration, shipped workflow features and production-data correction tools, and handed over to the client's developers."
+      detail: "The inherited mobile and web application gained notes and batch reassignment, and a failed public dataset was restored and re-scored before handover."
+      url: https://portfolio.example.com/work/
+    question: Which existing integration or inherited workflow costs the team the most operational effort, and what would a reliable handover need to include?
+    unknowns: [Which existing workflow needs improvement, What access and ownership an external engineer would have, Whether contract help is appropriate]
+    expected_result: A specific existing workflow, an agreed reliability or recovery outcome, and enough context to scope a bounded intervention.
+  - id: interim_leadership
+    label: Interim engineering leadership
+    fit:
+      remit: ['\b(?:lead|manage|coach|grow|build)\w*\b.{0,35}\bquality engineering(?: teams?)?\b']
+      adjacent: ['\b(?:lead|manage|coach|grow|build)\w*\b.{0,35}\b(?:software engineering|engineering (?:teams?|org|organisation|organization|delivery)|software teams?)\b']
+      capabilities: ['(?:leading|managing|coaching|growing) quality engineering teams?', 'quality engineering leadership', 'team leadership']
+    cues: [interim engineering, interim head, engineering leadership, head of engineering,
+           director of engineering, engineering manager, engineering effectiveness,
+           engineering productivity, developer productivity, developer experience, fractional cto]
+    hypothesis: They may need temporary engineering leadership or a clearer operating model while responsibility, teams or priorities change.
+    help: Clarify delivery ownership and immediate constraints with the existing leaders, set a small number of priorities, and establish evidence the team can use to decide what changes next.
+    proof:
+      text: "At Example Corp, the candidate grew quality engineering from three to 12 engineers and designed an operating model with clear ownership, coaching and shared quality metrics."
+      detail: "The function supported about 150 people in product and engineering, with a career framework, ownership at each test layer and shared measures of release quality."
+      url: https://portfolio.example.com/work/
+    question: While this leadership need is being resolved, who owns the engineering outcomes and which decisions most need support?
+    unknowns: [Whether interim leadership is acceptable, Which decisions and teams the remit actually owns, Who can agree the engagement and its terms]
+    expected_result: A confirmed temporary leadership remit, decision authority and engagement route, or a clear reason to hold.

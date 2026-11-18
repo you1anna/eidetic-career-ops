@@ -1,0 +1,34 @@
+[Unit]
+Description=One bounded work-ops Codex research request
+
+[Service]
+Type=exec
+User=codex
+Group=codex
+UMask=0077
+ExecStart=/usr/bin/python3 /usr/local/lib/work-ops-research/research_codex.py
+StandardInput=socket
+StandardOutput=inherit
+StandardError=journal
+WorkingDirectory=/tmp
+RuntimeMaxSec=350
+TimeoutStopSec=5
+KillMode=control-group
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+AmbientCapabilities=
+ReadWritePaths=/home/codex/.codex
+InaccessiblePaths=/srv/work-ops -/home/codex/.ssh /etc/credstore.encrypted -/home/codex/.config/gh
+MemoryMax=1G
+CPUQuota=100%

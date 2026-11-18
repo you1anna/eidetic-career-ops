@@ -1,0 +1,11 @@
+[Unit]
+Description=Collect and process LinkedIn alerts every 15 minutes
+
+[Timer]
+OnCalendar=*-*-* *:00/15:00 UTC
+Persistent=true
+RandomizedDelaySec=30
+Unit=wo-email.service
+
+[Install]
+WantedBy=timers.target

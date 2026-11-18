@@ -1,0 +1,27 @@
+{
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.4.11",
+    "@cloudflare/workers-types": "^5.20261030.1",
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.156.0"
+  },
+  "name": "work-ops-email-intake",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "types": "wrangler types --include-runtime false --strict-vars false",
+    "check": "npm run types -- --check && npm run typecheck && npm test && npm run integration-check && npm run dry-run",
+    "dry-run": "wrangler deploy --dry-run",
+    "integration-check": "python3 -B integration_check.py"
+  },
+  "overrides": {
+    "sharp": "^0.35.5",
+    "undici": "7.30.1",
+    "zod": "4.6.7"
+  }
+}

@@ -1,0 +1,72 @@
+# Candidate profile: a fictional engineering and quality lead, used by this public demo.
+# Replace it with your own. Read at runtime for `candidate.full_name` and `candidate.linkedin` (the
+# LinkedIn importer and tools/note_context.py), `target_roles.primary` and `no_go` (research context),
+# and the contact rules at the end (workspace/profile_rules.py). The rest guides attended work.
+# Scanner settings and ranking weights live in portals.yml, relevance.yml and problem_playbooks.yml.
+
+candidate:
+  full_name: "Morgan Sample"
+  email: "morgan@example.com"
+  location: "London, UK"
+  linkedin: "linkedin.com/in/morgan-sample"
+  portfolio_url: "https://portfolio.example.com"
+  github: ""
+  photo: ""
+
+target_roles:
+  primary:
+    - "Interim engineering leadership: Head of Engineering, Engineering Manager, Director; contract or interim"
+    - "Engineering or quality leadership with implementation; contract, interim or suitable permanent"
+    - "Systems integration, production recovery and developer handover"
+    - "Engineering productivity, quality platforms and evaluation of existing AI systems"
+  archetypes:
+    - name: "Interim engineering leadership"
+      level: "Built and ran a 12-person function; contract or interim preferred"
+      fit: "primary"
+      cv: "Director of Engineering / CTO"
+    - name: "Interim quality leadership with implementation"
+      level: "Evidence-led scope; duration and hours flexible"
+      fit: "primary"
+      cv: "Head of Quality Engineering"
+    - name: "AI evaluation and reliability (contract)"
+      level: "Existing-system evaluation and release evidence"
+      fit: "primary"
+      cv: "Quality Engineering Lead"
+    - name: "Founding or forward-deployed engineering"
+      level: "Senior; suitable permanent opportunity assessed against actual scope"
+      fit: "adjacent"
+      cv: "Founding Engineer"
+  fit_threshold: 0.7
+  no_go:
+    - "Roles that require a security clearance the candidate does not hold"
+  accept:
+    - "Fixed-term contracts with an end date"
+
+narrative:
+  headline: "Engineering leadership, systems integration and delivery reliability"
+  exit_story: "Led Example Corp's quality function as it grew from three to 12 engineers and delivered evaluation of an existing AI assistant. Now independent."
+  superpowers:
+    - "LLM evaluation for production RAG systems (prompt injection, tenant isolation, personal-data guardrails)"
+    - "Non-deterministic output validation: semantic assertions, classifier checks, repeated runs"
+    - "Evidence-driven quality tooling, such as incident classification that costs preventable failures"
+
+location:
+  country: "United Kingdom"
+  city: "London"
+  timezone: "Europe/London (GMT/BST)"
+
+cv:
+  registry: "config/cvs.yml"
+
+# Contact rules the code applies without naming them (workspace/profile_rules.py owns how they are read).
+# People still at the former employer carry `flag` on their LinkedIn observation and `warning` in their
+# context, and stay out of outreach suggestions unless recorded as a "former <name> colleague".
+# `flag` and `warning` match values already stored in the database: change them only with a migration.
+former_employer:
+  label: "Example Corp"
+  names: ["example corp", "example group"]
+  aliases: ["xc"]
+  flag: "former_employer"
+  warning: "Example Corp: check confidentiality and non-solicitation obligations before contact."
+# A network-sheet note that touches one of these topics is never processed or sent to the site.
+private_note_topics: [medical, health, family matter, confidential]

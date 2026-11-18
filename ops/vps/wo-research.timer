@@ -1,0 +1,11 @@
+[Unit]
+Description=Research active jobs and contacts twice daily
+
+[Timer]
+OnCalendar=*-*-* 09,19:00:00 Europe/London
+Persistent=true
+RandomizedDelaySec=30
+Unit=wo-research.service
+
+[Install]
+WantedBy=timers.target

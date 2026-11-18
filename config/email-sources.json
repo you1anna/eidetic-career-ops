@@ -1,0 +1,4 @@
+{
+  "linkedin": {"sender": "jobalerts-noreply@linkedin.com", "label": "LinkedIn email"},
+  "jackandjill": {"sender": "jack@jackandjill.ai", "label": "Jack and Jill email"}
+}

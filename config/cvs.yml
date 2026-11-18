@@ -1,0 +1,33 @@
+# Six CV variants for the fictional candidate in config/profile.yml. Keys are fixed (search_config.CV_KEYS).
+# A draft can be selected, but its readiness stays visible until the owner reviews it.
+# `summary` is the positioning line tools/note_context.py shows beside each CV.
+Director:
+  title: Director of Engineering / CTO
+  url: https://docs.example.com/cv/director-of-engineering
+  readiness: draft
+  summary: "Engineering-wide leadership; grew a 3 to 12 engineer function inside a 150-person product organisation; CI/release & AI evaluation"
+Manager:
+  title: Engineering Manager
+  url: https://docs.example.com/cv/engineering-manager
+  readiness: ready
+  summary: "Engineering Manager; delivery, coaching, distributed teams, CI/CD, observability, hands-on product recovery & handover"
+QE:
+  title: Head of Quality Engineering
+  url: https://docs.example.com/cv/head-of-quality-engineering
+  readiness: ready
+  summary: "Head of Quality Engineering; quality operating models, release governance & AI assurance"
+QELead:
+  title: Quality Engineering Lead
+  url: https://docs.example.com/cv/quality-engineering-lead
+  readiness: ready
+  summary: "Quality Engineering Lead; hands-on test architecture, CI/CD orchestration & team leadership"
+FDE:
+  title: Forward Deployed Engineer
+  url: https://docs.example.com/cv/forward-deployed-engineer
+  readiness: ready
+  summary: "Forward Deployed Engineer; taking over undocumented products, APIs, AI evaluation & customer-stack delivery"
+Founding:
+  title: Founding Engineer
+  url: https://docs.example.com/cv/founding-engineer
+  readiness: ready
+  summary: "Founding Engineer; hands-on Python/TypeScript product & AI systems builder (RAG, CI foundations)"

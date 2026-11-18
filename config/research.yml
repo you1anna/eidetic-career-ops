@@ -1,0 +1,22 @@
+# Uses the existing VPS Codex ChatGPT login; no separate API key or dollar budget.
+engine: codex_cli
+enabled: true
+max_calls: 6
+focused: true
+# Opportunity evidence replaces outgoing message preparation. Existing schedules and caps remain.
+prepare: false
+# Historical notes remain readable; no research path creates or replaces outgoing wording.
+briefs: true
+
+# Durable site-managed invocation quotas. These are not HTTP/API request counts.
+allowances:
+  daily: 16
+  weekly: 100
+  lanes:
+    research: [12, 84]
+    incident: [4, 4]
+    question: [6, 6]
+    review: [1, 1]
+    evaluation: [5, 5]
+  sublimits:
+    preparation: [research, 15]

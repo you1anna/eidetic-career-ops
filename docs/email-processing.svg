@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1280" viewBox="0 0 1800 1280" role="img" aria-label="LinkedIn alerts | delivery, processing and proof"><title>LinkedIn alerts | delivery, processing and proof</title><desc>What happens to one email • The receiving and processing path runs without the Mac</desc><defs><marker id="flow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#257b7a"/></marker><marker id="research" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#7660a4"/></marker><marker id="admin" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#8b6d37"/></marker></defs><g font-family="Arial, Helvetica, sans-serif"><rect width="1800" height="1280" fill="#f5f8f8"/>
+<text x="40" y="58" font-size="38" fill="#173c3b" font-weight="700">LinkedIn alerts | delivery, processing and proof</text>
+<text x="40" y="96" font-size="20" fill="#51686b" font-weight="400">What happens to one email • The receiving and processing path runs without the Mac</text>
+<text x="40" y="133" font-size="18" fill="#51686b" font-weight="400">Solid teal: server data flow  •  Dashed purple: model-assisted research  •  Dashed brown: human action / administration</text>
+<rect x="40" y="180" width="1720" height="280" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="215" font-size="22" fill="#173c3b" font-weight="700">1  DELIVERY • Gmail and Cloudflare</text>
+<g data-box="Gmail selective forwarding"><rect x="70" y="245" width="480" height="160" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="278" font-size="22" fill="#173c3b" font-weight="700">Gmail selective forwarding</text>
+<text x="90" y="309" font-size="18" fill="#51686b" font-weight="400">Sender: jobalerts-noreply@linkedin.com</text>
+<text x="90" y="333" font-size="18" fill="#51686b" font-weight="400">Destination: alerts@example.com Keep</text>
+<text x="90" y="357" font-size="18" fill="#51686b" font-weight="400">Inbox/unread state + Work-ops label.</text>
+</g>
+<g data-box="Cloudflare Email Worker"><rect x="650" y="245" width="480" height="160" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="670" y="278" font-size="22" fill="#173c3b" font-weight="700">Cloudflare Email Worker</text>
+<text x="670" y="309" font-size="18" fill="#51686b" font-weight="400">Email Routing invokes the Worker. Raw</text>
+<text x="670" y="333" font-size="18" fill="#51686b" font-weight="400">MIME + envelope + hash go into D1. A</text>
+<text x="670" y="357" font-size="18" fill="#51686b" font-weight="400">committed write precedes acceptance.</text>
+</g>
+<g data-box="Durable D1 buffer"><rect x="1230" y="245" width="480" height="160" rx="14" fill="#e0f1eb" stroke="#8db7a5" stroke-width="2"/>
+<text x="1250" y="278" font-size="22" fill="#173c3b" font-weight="700">Durable D1 buffer</text>
+<text x="1250" y="309" font-size="18" fill="#51686b" font-weight="400">Retains mail during VPS downtime.</text>
+<text x="1250" y="333" font-size="18" fill="#51686b" font-weight="400">Authenticated batches, up to 10 messages.</text>
+<text x="1250" y="357" font-size="18" fill="#51686b" font-weight="400">No public mailbox or raw-mail browser.</text>
+</g>
+<path d="M550,325 L650,325" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M1130,325 L1230,325" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<rect x="40" y="505" width="1720" height="300" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="540" font-size="22" fill="#173c3b" font-weight="700">2  SERVER PROCESSING • every 15 minutes, up to 30 seconds jitter</text>
+<g data-box="Pull → store → acknowledge"><rect x="1230" y="575" width="480" height="175" rx="14" fill="#e0f1eb" stroke="#8db7a5" stroke-width="2"/>
+<text x="1250" y="608" font-size="22" fill="#173c3b" font-weight="700">Pull → store → acknowledge</text>
+<text x="1250" y="639" font-size="18" fill="#51686b" font-weight="400">VPS verifies the MIME hash. Commits</text>
+<text x="1250" y="663" font-size="18" fill="#51686b" font-weight="400">original to private SQLite spool. Only</text>
+<text x="1250" y="687" font-size="18" fill="#51686b" font-weight="400">then ACKs: D1 releases its raw copy. Lost</text>
+<text x="1250" y="711" font-size="18" fill="#51686b" font-weight="400">ACK replays safely; hash deduplicates.</text>
+</g>
+<g data-box="Existing parser + role rules"><rect x="650" y="575" width="480" height="175" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="670" y="608" font-size="22" fill="#173c3b" font-weight="700">Existing parser + role rules</text>
+<text x="670" y="639" font-size="18" fill="#51686b" font-weight="400">Reads retained mail, up to 200 per pass.</text>
+<text x="670" y="663" font-size="18" fill="#51686b" font-weight="400">Extracts adverts and canonical job URLs.</text>
+<text x="670" y="687" font-size="18" fill="#51686b" font-weight="400">Keeps exclusions and quarantine evidence.</text>
+<text x="670" y="711" font-size="18" fill="#51686b" font-weight="400">Unknown facts remain unknown.</text>
+</g>
+<g data-box="One canonical importer"><rect x="70" y="575" width="480" height="175" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="90" y="608" font-size="22" fill="#173c3b" font-weight="700">One canonical importer</text>
+<text x="90" y="639" font-size="18" fill="#51686b" font-weight="400">Matches existing records and</text>
+<text x="90" y="663" font-size="18" fill="#51686b" font-weight="400">organisations. Preserves edits, notes and</text>
+<text x="90" y="687" font-size="18" fill="#51686b" font-weight="400">workflow state. Retains original source</text>
+<text x="90" y="711" font-size="18" fill="#51686b" font-weight="400">dates and evidence. Email alone never</text>
+<text x="90" y="735" font-size="18" fill="#51686b" font-weight="400">refreshes source checks.</text>
+</g>
+<path d="M1470,405 L1470,575" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M1230,660 L1130,660" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M650,660 L550,660" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<rect x="40" y="850" width="1720" height="250" rx="20" fill="#edf3f3" stroke="#c9d9d8" stroke-width="2"/>
+<text x="62" y="885" font-size="22" fill="#173c3b" font-weight="700">3  WHAT OWNER SEES • Jobs → LinkedIn email processing</text>
+<g data-box="Run receipt + job candidates"><rect x="70" y="920" width="480" height="150" rx="14" fill="#e0f1eb" stroke="#8db7a5" stroke-width="2"/>
+<text x="90" y="953" font-size="22" fill="#173c3b" font-weight="700">Run receipt + job candidates</text>
+<text x="90" y="984" font-size="18" fill="#51686b" font-weight="400">Last attempt and successful check. Import</text>
+<text x="90" y="1008" font-size="18" fill="#51686b" font-weight="400">outcomes and source evidence. Useful</text>
+<text x="90" y="1032" font-size="18" fill="#51686b" font-weight="400">candidates appear in Jobs.</text>
+</g>
+<g data-box="Honest status"><rect x="650" y="920" width="480" height="150" rx="14" fill="#fff4db" stroke="#d3ae64" stroke-width="2"/>
+<text x="670" y="953" font-size="22" fill="#173c3b" font-weight="700">Honest status</text>
+<text x="670" y="984" font-size="18" fill="#51686b" font-weight="400">Empty polling proves execution only.</text>
+<text x="670" y="1008" font-size="18" fill="#51686b" font-weight="400">Failure / partial / stalled remain</text>
+<text x="670" y="1032" font-size="18" fill="#51686b" font-weight="400">visible. Overdue after 45 minutes without</text>
+<text x="670" y="1056" font-size="18" fill="#51686b" font-weight="400">a run.</text>
+</g>
+<g data-box="Inspect delivery details"><rect x="1230" y="920" width="480" height="150" rx="14" fill="#fff" stroke="#c9d9d8" stroke-width="2"/>
+<text x="1250" y="953" font-size="22" fill="#173c3b" font-weight="700">Inspect delivery details</text>
+<text x="1250" y="984" font-size="18" fill="#51686b" font-weight="400">Last arrival and last alert processed.</text>
+<text x="1250" y="1008" font-size="18" fill="#51686b" font-weight="400">Parsed/matching counts and waiting mail.</text>
+<text x="1250" y="1032" font-size="18" fill="#51686b" font-weight="400">Refresh the page for the newest receipt.</text>
+</g>
+<path d="M310,750 L310,825 L55,825 L55,985 L70,985" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M550,985 L650,985" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<path d="M1130,985 L1230,985" fill="none" stroke="#257b7a" stroke-width="3"  marker-end="url(#flow)"/>
+<text x="40" y="1150" font-size="22" fill="#173c3b" font-weight="700">Recovery: collection failures retry; retained mail can still process. Parser quarantine needs attended investigation.</text>
+<text x="40" y="1190" font-size="20" fill="#51686b" font-weight="400">Limits: 512 KiB/message; VPS: 1,000 retained messages; D1: 1,000 pending messages. Each has a 64 MiB raw-mail cap.</text>
+<text x="40" y="1225" font-size="20" fill="#51686b" font-weight="400">Delivery recovery: trace a fresh alert through scheduled processing and matching Jobs records; an empty poll is not proof.</text>
+<text x="40" y="1255" font-size="19" fill="#51686b" font-weight="400">Mail arrival never refreshes source checks. Separate focused research adds dated evidence; the release ledger records activation and observed recovery.</text><rect x="1477" y="467" width="156" height="29" rx="5" fill="#f5f8f8"/><text x="1485" y="487" font-size="18" fill="#257b7a" font-weight="600">VPS polls HTTPS</text></g></svg>
